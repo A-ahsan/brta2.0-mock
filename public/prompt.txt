@@ -1,0 +1,101 @@
+You are an expert full-stack product designer and frontend engineer.
+
+I want you to create mockup UI components only (no backend logic yet) for my project called BRTA 2.O – Smart Transport Portal of Bangladesh.
+
+Goal: to showcase a professional animated prototype of the website to clients and judges.  
+Design should feel modern, government-grade, but startup-polished, with clean layout, icons, and motion transitions.
+
+---
+
+## 📘 Brand Identity
+Project Name: BRTA 2.O  
+Tagline: “Smart Roads. Smart Drivers. Smart Bangladesh.”  "NO DALAL,NO DELAY"
+
+proper bangla english toggler 
+
+
+Main color codes
+Primary (BRTA green): #006A4E
+Primary dark (contrast): #004D3A
+Success (approved): #28A745
+Danger / error: #DC3545
+
+Page background / light panels: #F8F9FA
+Muted / borders: #E9ECEF
+Text (dark): #333333
+White: #FFFFFF
+
+ 
+Icons: Phosphor or Feather Icons  
+Illustrations: Simple flat vector style (like Storyset)
+
+---
+
+## 🖥️ Pages to Mock
+### 1. Homepage
+- Navbar: Logo, links → Dashboard, Reminders, Appointments, Login
+- Hero Section:
+  - Tagline: “One Unified Vehicle & License Management Portal”
+  - CTA: “Get Started” button
+  - Illustration: a person checking car and license info
+- Feature Section: cards for  
+  - Driving License 
+  - Face Verification  
+  - Slot Booking  
+  - Payment System  
+  - QR-based Police Check  
+  - Chatbot Assistant
+- 
+
+### 2. User Dashboard
+- Tabs: License Application, Vehicle Registration, My Payments, Test Booking
+- Sidebar with icons and hover animation
+-and the things u think it will be best 
+
+### 3. Admin Panel
+- Analytics cards: total users, total DL requests, vehicle registered
+- Heatmap (mock) showing rush levels per test center
+- Manage test slots, approve/reject DL applications
+- Minimal chart visuals (static)
+
+### 4. Police Dashboard (Mock)
+- QR code scanner area
+- Mock vehicle record table with “Check Vehicle” button
+- Status badge: “Valid / Expired / Fined”
+statistics
+
+5.signup login page 
+if it possible from home page it will be animated to there 
+
+---
+
+## 🎬 Interactions
+- Use Framer Motion for subtle animations (fade-in, slide-up, hover)
+- Add Dark/Light mode toggle
+- Keep all text and visuals responsive
+- Use mock JSON data for content
+
+
+
+---
+
+## 🚫 Rules
+- Do NOT connect to backend or APIs yet
+- Do NOT include payment or AI logic
+- Only focus on frontend UI mockups
+- Use Tailwind CSS components and consistent color palette
+
+need animation in homepage for attraction also in moto texts i gave in top
+
+---
+
+Output format:
+- A full React + Vite + Tailwind CSS project (UI only)
+- Include pages/ and components/ folders
+- All images/illustrations as placeholders or from Unsplash/Storyset
+- Provide a clean, minimal layout
+
+This project is for a client demo — visual quality is more important than logic.
+
+i want the best ,make it professional ,user friendly ,neat and clean ,if u think there is better color option for bangladesh type u can use it u have this freedom
+i want to be the champion of my project show ,so im making this.

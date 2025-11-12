@@ -1,0 +1,136 @@
+export const translations = {
+  en: {
+    // Navbar
+    dashboard: 'Dashboard',
+    reminders: 'Reminders',
+    appointments: 'Appointments',
+    login: 'Login',
+    signup: 'Sign Up',
+    logout: 'Logout',
+    
+    // Hero Section
+    tagline: 'Smart Roads. Smart Drivers. Smart Bangladesh.',
+    subtitle: 'One Unified Vehicle & License Management Portal',
+    cta: 'Get Started',
+    noDalalNoDelay: 'NO DALAL, NO DELAY',
+    
+    // Features
+    features: 'Features',
+    drivingLicense: 'Driving License',
+    drivingLicenseDesc: 'Apply and track your driving license application online',
+    faceVerification: 'Face Verification',
+    faceVerificationDesc: 'Secure biometric authentication for enhanced security',
+    slotBooking: 'Slot Booking',
+    slotBookingDesc: 'Book your test slots at your convenience',
+    paymentSystem: 'Payment System',
+    paymentSystemDesc: 'Secure online payment integration',
+    qrPoliceCheck: 'QR Police Check',
+    qrPoliceCheckDesc: 'Instant vehicle verification for law enforcement',
+    chatbot: 'AI Chatbot',
+    chatbotDesc: '24/7 intelligent assistant for your queries',
+    
+    // Dashboard
+    licenseApplication: 'License Application',
+    vehicleRegistration: 'Vehicle Registration',
+    myPayments: 'My Payments',
+    testBooking: 'Test Booking',
+    profile: 'Profile',
+    settings: 'Settings',
+    
+    // Admin Panel
+    adminPanel: 'Admin Panel',
+    totalUsers: 'Total Users',
+    dlRequests: 'DL Requests',
+    vehiclesRegistered: 'Vehicles Registered',
+    manageSlots: 'Manage Slots',
+    approveReject: 'Approve/Reject',
+    analytics: 'Analytics',
+    
+    // Police Dashboard
+    policeDashboard: 'Police Dashboard',
+    scanQR: 'Scan QR Code',
+    checkVehicle: 'Check Vehicle',
+    valid: 'Valid',
+    expired: 'Expired',
+    fined: 'Fined',
+    statistics: 'Statistics',
+    
+    // Auth
+    emailAddress: 'Email Address',
+    password: 'Password',
+    confirmPassword: 'Confirm Password',
+    fullName: 'Full Name',
+    phoneNumber: 'Phone Number',
+    rememberMe: 'Remember Me',
+    forgotPassword: 'Forgot Password?',
+    dontHaveAccount: "Don't have an account?",
+    alreadyHaveAccount: 'Already have an account?',
+  },
+  bn: {
+    // Navbar
+    dashboard: 'ড্যাশবোর্ড',
+    reminders: 'রিমাইন্ডার',
+    appointments: 'অ্যাপয়েন্টমেন্ট',
+    login: 'লগইন',
+    signup: 'সাইন আপ',
+    logout: 'লগআউট',
+    
+    // Hero Section
+    tagline: 'স্মার্ট রাস্তা। স্মার্ট ড্রাইভার। স্মার্ট বাংলাদেশ।',
+    subtitle: 'একীভূত যানবাহন ও লাইসেন্স ব্যবস্থাপনা পোর্টাল',
+    cta: 'শুরু করুন',
+    noDalalNoDelay: 'কোন দালাল নেই, কোন বিলম্ব নেই',
+    
+    // Features
+    features: 'বৈশিষ্ট্য',
+    drivingLicense: 'ড্রাইভিং লাইসেন্স',
+    drivingLicenseDesc: 'অনলাইনে আপনার ড্রাইভিং লাইসেন্স আবেদন করুন এবং ট্র্যাক করুন',
+    faceVerification: 'মুখ যাচাইকরণ',
+    faceVerificationDesc: 'উন্নত নিরাপত্তার জন্য নিরাপদ বায়োমেট্রিক প্রমাণীকরণ',
+    slotBooking: 'স্লট বুকিং',
+    slotBookingDesc: 'আপনার সুবিধামত পরীক্ষার স্লট বুক করুন',
+    paymentSystem: 'পেমেন্ট সিস্টেম',
+    paymentSystemDesc: 'নিরাপদ অনলাইন পেমেন্ট ইন্টিগ্রেশন',
+    qrPoliceCheck: 'QR পুলিশ চেক',
+    qrPoliceCheckDesc: 'আইন প্রয়োগকারীদের জন্য তাৎক্ষণিক যানবাহন যাচাইকরণ',
+    chatbot: 'AI চ্যাটবট',
+    chatbotDesc: 'আপনার প্রশ্নের জন্য ২৪/৭ বুদ্ধিমান সহায়ক',
+    
+    // Dashboard
+    licenseApplication: 'লাইসেন্স আবেদন',
+    vehicleRegistration: 'যানবাহন নিবন্ধন',
+    myPayments: 'আমার পেমেন্ট',
+    testBooking: 'পরীক্ষা বুকিং',
+    profile: 'প্রোফাইল',
+    settings: 'সেটিংস',
+    
+    // Admin Panel
+    adminPanel: 'অ্যাডমিন প্যানেল',
+    totalUsers: 'মোট ব্যবহারকারী',
+    dlRequests: 'DL অনুরোধ',
+    vehiclesRegistered: 'নিবন্ধিত যানবাহন',
+    manageSlots: 'স্লট পরিচালনা',
+    approveReject: 'অনুমোদন/প্রত্যাখ্যান',
+    analytics: 'বিশ্লেষণ',
+    
+    // Police Dashboard
+    policeDashboard: 'পুলিশ ড্যাশবোর্ড',
+    scanQR: 'QR কোড স্ক্যান করুন',
+    checkVehicle: 'যানবাহন পরীক্ষা',
+    valid: 'বৈধ',
+    expired: 'মেয়াদ শেষ',
+    fined: 'জরিমানা',
+    statistics: 'পরিসংখ্যান',
+    
+    // Auth
+    emailAddress: 'ইমেইল ঠিকানা',
+    password: 'পাসওয়ার্ড',
+    confirmPassword: 'পাসওয়ার্ড নিশ্চিত করুন',
+    fullName: 'পুরো নাম',
+    phoneNumber: 'ফোন নম্বর',
+    rememberMe: 'আমাকে মনে রাখুন',
+    forgotPassword: 'পাসওয়ার্ড ভুলে গেছেন?',
+    dontHaveAccount: 'অ্যাকাউন্ট নেই?',
+    alreadyHaveAccount: 'ইতিমধ্যে একটি অ্যাকাউন্ট আছে?',
+  }
+};
