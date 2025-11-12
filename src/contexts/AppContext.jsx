@@ -7,13 +7,18 @@ export const useTheme = () => useContext(ThemeContext);
 export const useLanguage = () => useContext(LanguageContext);
 
 export const ThemeProvider = ({ children }) => {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved === 'dark';
+  });
 
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     }
   }, [isDark]);
 
@@ -27,10 +32,15 @@ export const ThemeProvider = ({ children }) => {
 };
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState('en'); // 'en' or 'bn'
+  const [language, setLanguage] = useState(() => {
+    const saved = localStorage.getItem('language');
+    return saved || 'en';
+  });
 
   const toggleLanguage = () => {
-    setLanguage(language === 'en' ? 'bn' : 'en');
+    const newLang = language === 'en' ? 'bn' : 'en';
+    setLanguage(newLang);
+    localStorage.setItem('language', newLang);
   };
 
   return (

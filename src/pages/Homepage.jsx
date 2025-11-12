@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   IdentificationCard,
@@ -11,16 +12,59 @@ import {
   CheckCircle,
   Lightning,
   Shield,
+  Car,
+  Truck,
+  Bicycle,
 } from 'phosphor-react';
 import Navbar from '../components/Navbar';
 import FeatureCard from '../components/FeatureCard';
 import { useLanguage } from '../contexts/AppContext';
 import { translations } from '../utils/translations';
 
+const AnimatedLine = ({ children, delay = 0 }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 100 }}
+      transition={{
+        duration: 0.8,
+        delay: delay,
+        ease: "easeOut"
+      }}
+      className="absolute inset-0"
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 const Homepage = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const t = translations[language];
+
+  // Split tagline by period (works for both languages)
+  const taglineParts = t.tagline.split('।').length > 1 
+    ? t.tagline.split('।').filter(part => part.trim())
+    : t.tagline.split('.').filter(part => part.trim());
+  const separator = language === 'bn' ? '।' : '.';
+
+  // Rotating text animation state
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % taglineParts.length);
+    }, 3000); // Change text every 3 seconds
+    return () => clearInterval(interval);
+  }, [taglineParts.length]);
+
+  const gradients = [
+    'bg-gradient-to-r from-primary via-green-600 to-primary-dark',
+    'bg-gradient-to-r from-green-600 via-primary to-green-600',
+    'bg-gradient-to-r from-primary-dark via-primary to-green-600',
+  ];
 
   const features = [
     {
@@ -88,42 +132,26 @@ const Homepage = () => {
               </motion.div>
 
               {/* Animated Tagline */}
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
-                <motion.div
-                  initial={{ opacity: 0, x: -100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.3 }}
-                  className="mb-2"
-                >
-                  <span className="bg-gradient-to-r from-primary via-green-600 to-primary-dark bg-clip-text text-transparent">
-                    Smart Roads.
-                  </span>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, x: -100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
-                  className="mb-2"
-                >
-                  <span className="bg-gradient-to-r from-green-600 via-primary to-green-600 bg-clip-text text-transparent">
-                    Smart Drivers.
-                  </span>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, x: -100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.9 }}
-                >
-                  <span className="bg-gradient-to-r from-primary-dark via-primary to-green-600 bg-clip-text text-transparent">
-                    Smart Bangladesh.
-                  </span>
-                </motion.div>
-              </h1>
+              <div className="mb-6 min-h-[12rem] md:min-h-[14rem] lg:min-h-[16rem] relative overflow-visible py-4">
+                <AnimatePresence mode="wait">
+                  <motion.h1
+                    key={currentIndex}
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 100 }}
+                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-normal absolute top-0 left-0 right-0 text-primary dark:text-green-400"
+                    style={{ lineHeight: '1.5' }}
+                  >
+                    {taglineParts[currentIndex]}{separator}
+                  </motion.h1>
+                </AnimatePresence>
+              </div>
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9, duration: 0.6 }}
+                transition={{ delay: 1.2, duration: 0.6 }}
                 className="text-xl text-gray-600 dark:text-gray-300 mb-8"
               >
                 {t.subtitle}
@@ -133,7 +161,7 @@ const Homepage = () => {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 1.1 }}
+                transition={{ delay: 1.5 }}
                 className="flex flex-wrap gap-4 mb-8"
               >
                 {benefits.map((benefit, index) => (
@@ -141,7 +169,7 @@ const Homepage = () => {
                     key={index}
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 1.2 + index * 0.1 }}
+                    transition={{ delay: 1.6 + index * 0.1 }}
                     className="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md"
                   >
                     <span className="text-success">{benefit.icon}</span>
@@ -154,7 +182,7 @@ const Homepage = () => {
               <motion.button
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.5 }}
+                transition={{ delay: 1.9 }}
                 whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(0, 106, 78, 0.3)' }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/signup')}
@@ -185,31 +213,73 @@ const Homepage = () => {
                   className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-3xl p-8 shadow-2xl border-2 border-primary/20"
                 >
                   <div className="space-y-6">
-                    {/* ID Card Icon */}
+                    {/* Top: ID Card */}
                     <div className="flex items-center justify-center">
-                      <div className="w-32 h-32 bg-gradient-to-br from-primary to-primary-dark rounded-2xl flex items-center justify-center shadow-xl">
+                      <motion.div
+                        whileHover={{ scale: 1.1, rotate: -5 }}
+                        className="w-32 h-32 bg-gradient-to-br from-primary to-primary-dark rounded-2xl flex items-center justify-center shadow-xl"
+                      >
                         <IdentificationCard size={64} weight="duotone" className="text-white" />
-                      </div>
+                      </motion.div>
                     </div>
                     
-                    {/* Icon Grid */}
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="bg-success/10 p-4 rounded-xl flex items-center justify-center">
-                        <CheckCircle size={32} weight="duotone" className="text-success" />
-                      </div>
-                      <div className="bg-primary/10 p-4 rounded-xl flex items-center justify-center">
-                        <QrCode size={32} weight="duotone" className="text-primary" />
-                      </div>
-                      <div className="bg-yellow-500/10 p-4 rounded-xl flex items-center justify-center">
-                        <Lightning size={32} weight="duotone" className="text-yellow-500" />
-                      </div>
+                    {/* Middle: Vehicles */}
+                    <div className="flex items-center justify-center gap-4">
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        animate={{ x: [-3, 3, -3] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                        className="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center shadow-xl"
+                      >
+                        <Car size={48} weight="duotone" className="text-white" />
+                      </motion.div>
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        animate={{ x: [3, -3, 3] }}
+                        transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+                        className="w-24 h-24 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-xl"
+                      >
+                        <Bicycle size={48} weight="duotone" className="text-white" />
+                      </motion.div>
                     </div>
                     
-                    {/* Shield at bottom */}
+                    {/* Truck */}
                     <div className="flex items-center justify-center">
-                      <div className="bg-primary/10 px-6 py-3 rounded-full flex items-center gap-2">
-                        <Shield size={24} weight="duotone" className="text-primary" />
-                        <span className="text-sm font-bold text-primary">
+                      <motion.div
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        className="w-28 h-20 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center shadow-xl"
+                      >
+                        <Truck size={48} weight="duotone" className="text-white" />
+                      </motion.div>
+                    </div>
+                    
+                    {/* Bottom: Feature Icons */}
+                    <div className="grid grid-cols-3 gap-3">
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        className="bg-success/10 p-4 rounded-xl flex items-center justify-center"
+                      >
+                        <CheckCircle size={28} weight="duotone" className="text-success" />
+                      </motion.div>
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        className="bg-primary/10 p-4 rounded-xl flex items-center justify-center"
+                      >
+                        <QrCode size={28} weight="duotone" className="text-primary" />
+                      </motion.div>
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        className="bg-yellow-500/10 p-4 rounded-xl flex items-center justify-center"
+                      >
+                        <Lightning size={28} weight="duotone" className="text-yellow-500" />
+                      </motion.div>
+                    </div>
+                    
+                    {/* Shield Badge */}
+                    <div className="flex items-center justify-center pt-2">
+                      <div className="bg-primary/10 px-6 py-2 rounded-full flex items-center gap-2">
+                        <Shield size={20} weight="duotone" className="text-primary" />
+                        <span className="text-xs font-bold text-primary">
                           {language === 'en' ? 'Secure & Verified' : 'নিরাপদ এবং যাচাইকৃত'}
                         </span>
                       </div>
