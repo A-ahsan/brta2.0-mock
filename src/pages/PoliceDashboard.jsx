@@ -18,6 +18,7 @@ import {
 import StatCard from '../components/StatCard';
 import { useLanguage } from '../contexts/AppContext';
 import { translations } from '../utils/translations';
+import ThemeLanguageToggler from '../components/ThemeLanguageToggler';
 
 const PoliceDashboard = () => {
   const navigate = useNavigate();
@@ -129,15 +130,7 @@ const PoliceDashboard = () => {
             </div>
 
             <div className="flex items-center gap-4">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/')}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              >
-                <House size={20} weight="bold" />
-                {language === 'en' ? 'Home' : 'হোম'}
-              </motion.button>
+              <ThemeLanguageToggler />
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

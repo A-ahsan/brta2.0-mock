@@ -20,6 +20,7 @@ import {
 } from 'phosphor-react';
 import { useTheme, useLanguage } from '../contexts/AppContext';
 import { translations } from '../utils/translations';
+import ThemeLanguageToggler from '../components/ThemeLanguageToggler';
 
 const UserDashboard = () => {
   const [activeTab, setActiveTab] = useState('license');
@@ -290,42 +291,40 @@ const UserDashboard = () => {
           <div>
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">{t.settings}</h2>
             <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md space-y-6">
+              {/* Change Password */}
               <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <div>
-                  <h3 className="font-semibold text-gray-800 dark:text-white">
-                    {language === 'en' ? 'Dark Mode' : 'ডার্ক মোড'}
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {language === 'en' ? 'Toggle dark/light theme' : 'ডার্ক/লাইট থিম টগল করুন'}
-                  </p>
+                  <h3 className="font-semibold text-gray-800 dark:text-white">{language === 'en' ? 'Change Password' : 'পাসওয়ার্ড পরিবর্তন করুন'}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{language === 'en' ? 'Update your account password.' : 'আপনার অ্যাকাউন্টের পাসওয়ার্ড আপডেট করুন।'}</p>
                 </div>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={toggleTheme}
-                  className="p-3 rounded-lg bg-primary text-white shadow-md"
-                >
-                  {isDark ? <Sun size={24} weight="bold" /> : <Moon size={24} weight="bold" />}
-                </motion.button>
+                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-4 py-2 bg-primary text-white rounded-lg font-semibold shadow-md">{language === 'en' ? 'Change' : 'পরিবর্তন'}</motion.button>
               </div>
-
+              {/* Change Email */}
               <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <div>
-                  <h3 className="font-semibold text-gray-800 dark:text-white">
-                    {language === 'en' ? 'Language' : 'ভাষা'}
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {language === 'en' ? 'Switch between English and Bangla' : 'ইংরেজি এবং বাংলার মধ্যে স্যুইচ করুন'}
-                  </p>
+                  <h3 className="font-semibold text-gray-800 dark:text-white">{language === 'en' ? 'Change Email' : 'ইমেইল পরিবর্তন করুন'}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{language === 'en' ? 'Update your email address.' : 'আপনার ইমেইল ঠিকানা আপডেট করুন।'}</p>
                 </div>
+                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-4 py-2 bg-primary text-white rounded-lg font-semibold shadow-md">{language === 'en' ? 'Change' : 'পরিবর্তন'}</motion.button>
+              </div>
+              {/* Change Phone Number */}
+              <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div>
+                  <h3 className="font-semibold text-gray-800 dark:text-white">{language === 'en' ? 'Change Phone Number' : 'ফোন নম্বর পরিবর্তন করুন'}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{language === 'en' ? 'Update your phone number.' : 'আপনার ফোন নম্বর আপডেট করুন।'}</p>
+                </div>
+                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-4 py-2 bg-primary text-white rounded-lg font-semibold shadow-md">{language === 'en' ? 'Change' : 'পরিবর্তন'}</motion.button>
+              </div>
+              {/* Sign Out */}
+              <div className="flex justify-end pt-4">
                 <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={toggleLanguage}
-                  className="p-3 rounded-lg bg-primary text-white shadow-md flex items-center gap-2"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => navigate('/')}
+                  className="flex items-center gap-2 px-6 py-3 text-danger bg-danger/10 hover:bg-danger/20 rounded-xl font-bold text-lg shadow-lg transition-all"
                 >
-                  <Globe size={24} weight="bold" />
-                  <span className="font-semibold">{language.toUpperCase()}</span>
+                  <SignOut size={24} weight="bold" />
+                  {t.logout}
                 </motion.button>
               </div>
             </div>
@@ -365,15 +364,7 @@ const UserDashboard = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate('/')}
-              className="flex items-center gap-2 px-4 py-2 text-danger hover:bg-danger/10 rounded-lg transition-colors font-semibold"
-            >
-              <SignOut size={20} weight="bold" />
-              {t.logout}
-            </motion.button>
+            <ThemeLanguageToggler />
           </div>
         </div>
       </motion.header>

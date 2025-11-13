@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Moon, Sun, Globe } from 'phosphor-react';
+import ThemeLanguageToggler from './ThemeLanguageToggler';
 import { useTheme, useLanguage } from '../contexts/AppContext';
 import { translations } from '../utils/translations';
 
@@ -59,26 +60,7 @@ const Navbar = () => {
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-4">
-            {/* Language Toggle */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleLanguage}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-green-600 transition-colors"
-            >
-              <Globe size={20} weight="bold" />
-              <span className="ml-1 text-xs font-semibold">{language.toUpperCase()}</span>
-            </motion.button>
-
-            {/* Theme Toggle */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleTheme}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-green-600 transition-colors"
-            >
-              {isDark ? <Sun size={20} weight="bold" /> : <Moon size={20} weight="bold" />}
-            </motion.button>
+            <ThemeLanguageToggler />
 
             {/* Login Button */}
             <motion.button
