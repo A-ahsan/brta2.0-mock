@@ -21,10 +21,13 @@ import {
 import { useTheme, useLanguage } from '../contexts/AppContext';
 import { translations } from '../utils/translations';
 import ThemeLanguageToggler from '../components/ThemeLanguageToggler';
+import NewApplicationModal from '../components/NewApplicationModal';
 
 const UserDashboard = () => {
   const [activeTab, setActiveTab] = useState('license');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [showNewAppModal, setShowNewAppModal] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const { isDark, toggleTheme } = useTheme();
   const { language, toggleLanguage } = useLanguage();
@@ -87,6 +90,7 @@ const UserDashboard = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-primary text-white px-6 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all"
+                onClick={() => setIsModalOpen(true)}
               >
                 {language === 'en' ? '+ New Application' : '+ নতুন আবেদন'}
               </motion.button>
@@ -112,45 +116,6 @@ const UserDashboard = () => {
                     </div>
                     <span className={`px-4 py-1 rounded-full text-sm font-semibold border-2 ${getStatusColor(app.status)}`}>
                       {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
-                    </span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'vehicle':
-        return (
-          <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">{t.vehicleRegistration}</h2>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-primary text-white px-6 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all"
-              >
-                {language === 'en' ? '+ Register Vehicle' : '+ যানবাহন নিবন্ধন'}
-              </motion.button>
-            </div>
-            <div className="grid md:grid-cols-2 gap-6">
-              {vehicles.map((vehicle, index) => (
-                <motion.div
-                  key={vehicle.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-gradient-to-br from-primary/10 to-primary-dark/10 dark:from-primary/20 dark:to-primary-dark/20 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border-2 border-primary/20"
-                >
-                  <Car size={48} weight="duotone" className="text-primary mb-4" />
-                  <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">{vehicle.model}</h3>
-                  <p className="text-lg text-gray-700 dark:text-gray-300 mb-1 font-semibold">{vehicle.plate}</p>
-                  <div className="flex justify-between items-center mt-4">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
-                      {language === 'en' ? 'Year:' : 'বছর:'} {vehicle.year}
-                    </span>
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(vehicle.status)}`}>
-                      {vehicle.status}
                     </span>
                   </div>
                 </motion.div>
@@ -412,6 +377,17 @@ const UserDashboard = () => {
           </motion.div>
         </main>
       </div>
+
+      {/* New Application Modal */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <NewApplicationModal
+            open={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            language={language}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
