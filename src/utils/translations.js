@@ -9,7 +9,7 @@ export const translations = {
     logout: 'Logout',
     
     // Hero Section
-    tagline: 'Smart Roads. Smart Drivers. Smart Bangladesh.',
+    tagline: 'Smart Roads. Smart Drivers. Smart Traffic. Smart Bangladesh.',
     subtitle: 'One Unified Vehicle & License Management Portal',
     cta: 'Get Started',
     noDalalNoDelay: 'NO DALAL, NO DELAY',
@@ -76,8 +76,8 @@ export const translations = {
     logout: 'লগআউট',
     
     // Hero Section
-    tagline: 'স্মার্ট রাস্তা। স্মার্ট ড্রাইভার। স্মার্ট বাংলাদেশ।',
-    subtitle: 'একীভূত যানবাহন ও লাইসেন্স ব্যবস্থাপনা পোর্টাল',
+    tagline: 'স্মার্ট রাস্তা। স্মার্ট ড্রাইভার। স্মার্ট ট্রাফিক। স্মার্ট বাংলাদেশ।',
+    subtitle: 'একটি একীভূত যানবাহন এবং লাইসেন্স ব্যবস্থাপনা পোর্টাল',
     cta: 'শুরু করুন',
     noDalalNoDelay: 'কোন দালাল নেই, কোন বিলম্ব নেই',
     

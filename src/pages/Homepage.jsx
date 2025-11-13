@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import {
   IdentificationCard,
   Fingerprint,
@@ -53,10 +54,11 @@ const Homepage = () => {
   // Rotating text animation state
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Sync both text and animation with same state
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % taglineParts.length);
-    }, 3000); // Change text every 3 seconds
+    }, 5000); // Change both text and animation every 5 seconds (slower)
     return () => clearInterval(interval);
   }, [taglineParts.length]);
 
@@ -64,6 +66,22 @@ const Homepage = () => {
     'bg-gradient-to-r from-primary via-green-600 to-primary-dark',
     'bg-gradient-to-r from-green-600 via-primary to-green-600',
     'bg-gradient-to-r from-primary-dark via-primary to-green-600',
+  ];
+
+  // Lottie animations from LottieFiles - synced with tagline
+  const lottieAnimations = [
+    {
+      src: 'https://lottie.host/11c734c5-116f-45e0-bc03-cc668ea475cc/cYMgRLZuDp.lottie', // Smart Roads - should show car/road
+    },
+    {
+      src: 'https://lottie.host/40631cde-df3a-4602-8f11-4a942c3ec274/3pxVyqjqhy.lottie', // Smart Drivers - should show bike
+    },
+    {
+      src: 'https://lottie.host/1edbcd01-db0c-47d6-b9f6-7687663e7653/4Utdq6TqM8.lottie', // Smart Traffic - should show traffic signal
+    },
+    {
+      src: 'https://lottie.host/615492e9-b132-45fa-b258-1e63b1df031e/5z53SpGaI9.lottie', // Smart Bangladesh - should show flag
+    }
   ];
 
   const features = [
@@ -136,10 +154,10 @@ const Homepage = () => {
                 <AnimatePresence mode="wait">
                   <motion.h1
                     key={currentIndex}
-                    initial={{ opacity: 0, x: -100 }}
+                    initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 100 }}
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    exit={{ opacity: 0, x: 50 }}
+                    transition={{ duration: 1.2, ease: "easeInOut" }}
                     className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-normal absolute top-0 left-0 right-0 text-primary dark:text-green-400"
                     style={{ lineHeight: '1.5' }}
                   >
@@ -198,94 +216,34 @@ const Homepage = () => {
               </motion.button>
             </motion.div>
 
-            {/* Right Illustration */}
+            {/* Right Illustration - Lottie Animations */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="relative flex items-center justify-center"
+              className="relative flex items-center justify-center lg:justify-end"
             >
-              <div className="relative w-full max-w-md">
-                {/* Main Card */}
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                  className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-3xl p-8 shadow-2xl border-2 border-primary/20"
-                >
-                  <div className="space-y-6">
-                    {/* Top: ID Card */}
-                    <div className="flex items-center justify-center">
-                      <motion.div
-                        whileHover={{ scale: 1.1, rotate: -5 }}
-                        className="w-32 h-32 bg-gradient-to-br from-primary to-primary-dark rounded-2xl flex items-center justify-center shadow-xl"
-                      >
-                        <IdentificationCard size={64} weight="duotone" className="text-white" />
-                      </motion.div>
-                    </div>
-                    
-                    {/* Middle: Vehicles */}
-                    <div className="flex items-center justify-center gap-4">
-                      <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        animate={{ x: [-3, 3, -3] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                        className="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center shadow-xl"
-                      >
-                        <Car size={48} weight="duotone" className="text-white" />
-                      </motion.div>
-                      <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        animate={{ x: [3, -3, 3] }}
-                        transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-                        className="w-24 h-24 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-xl"
-                      >
-                        <Bicycle size={48} weight="duotone" className="text-white" />
-                      </motion.div>
-                    </div>
-                    
-                    {/* Truck */}
-                    <div className="flex items-center justify-center">
-                      <motion.div
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        className="w-28 h-20 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center shadow-xl"
-                      >
-                        <Truck size={48} weight="duotone" className="text-white" />
-                      </motion.div>
-                    </div>
-                    
-                    {/* Bottom: Feature Icons */}
-                    <div className="grid grid-cols-3 gap-3">
-                      <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        className="bg-success/10 p-4 rounded-xl flex items-center justify-center"
-                      >
-                        <CheckCircle size={28} weight="duotone" className="text-success" />
-                      </motion.div>
-                      <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        className="bg-primary/10 p-4 rounded-xl flex items-center justify-center"
-                      >
-                        <QrCode size={28} weight="duotone" className="text-primary" />
-                      </motion.div>
-                      <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        className="bg-yellow-500/10 p-4 rounded-xl flex items-center justify-center"
-                      >
-                        <Lightning size={28} weight="duotone" className="text-yellow-500" />
-                      </motion.div>
-                    </div>
-                    
-                    {/* Shield Badge */}
-                    <div className="flex items-center justify-center pt-2">
-                      <div className="bg-primary/10 px-6 py-2 rounded-full flex items-center gap-2">
-                        <Shield size={20} weight="duotone" className="text-primary" />
-                        <span className="text-xs font-bold text-primary">
-                          {language === 'en' ? 'Secure & Verified' : 'নিরাপদ এবং যাচাইকৃত'}
-                        </span>
+              <div className="w-full max-w-[500px]">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentIndex}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 1, ease: 'easeInOut' }}
+                    className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-3xl p-6 shadow-2xl border-2 border-primary/20"
+                  >
+                    <div className="relative w-full pb-[100%]">
+                      <div className="absolute inset-0">
+                        <DotLottieReact
+                          src={lottieAnimations[currentIndex].src}
+                          loop
+                          autoplay
+                        />
                       </div>
                     </div>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </motion.div>
           </div>
