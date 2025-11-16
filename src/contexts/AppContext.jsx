@@ -2,9 +2,11 @@ import React, { createContext, useContext, useState, useEffect, useMemo, useCall
 
 const ThemeContext = createContext();
 const LanguageContext = createContext();
+const DownloadContext = createContext();
 
 export const useTheme = () => useContext(ThemeContext);
 export const useLanguage = () => useContext(LanguageContext);
+export const useDownload = () => useContext(DownloadContext);
 
 export const ThemeProvider = ({ children }) => {
   const [isDark, setIsDark] = useState(() => {
@@ -52,5 +54,28 @@ export const LanguageProvider = ({ children }) => {
     <LanguageContext.Provider value={languageValue}>
       {children}
     </LanguageContext.Provider>
+  );
+};
+
+export const DownloadProvider = ({ children }) => {
+  const [isDownloading, setIsDownloading] = useState(false);
+  
+  useEffect(() => {
+    if (isDownloading) {
+      document.body.classList.add('downloading');
+    } else {
+      document.body.classList.remove('downloading');
+    }
+  }, [isDownloading]);
+  
+  const startDownload = useCallback(() => setIsDownloading(true), []);
+  const endDownload = useCallback(() => setIsDownloading(false), []);
+
+  const downloadValue = useMemo(() => ({ isDownloading, startDownload, endDownload }), [isDownloading]);
+
+  return (
+    <DownloadContext.Provider value={downloadValue}>
+      {children}
+    </DownloadContext.Provider>
   );
 };

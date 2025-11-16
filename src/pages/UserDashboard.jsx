@@ -24,7 +24,7 @@ import {
   ArrowsClockwise,
   DownloadSimple,
 } from 'phosphor-react';
-import { useTheme, useLanguage } from '../contexts/AppContext';
+import { useTheme, useLanguage, useDownload } from '../contexts/AppContext';
 import { translations } from '../utils/translations';
 import ThemeLanguageToggler from '../components/ThemeLanguageToggler';
 import NewApplicationModal from '../components/NewApplicationModal';
@@ -41,6 +41,7 @@ const UserDashboard = () => {
   const navigate = useNavigate();
   const { isDark, toggleTheme } = useTheme();
   const { language, toggleLanguage } = useLanguage();
+  const { isDownloading, startDownload, endDownload } = useDownload();
   const t = translations[language];
 
   const notifications = [
@@ -56,6 +57,7 @@ const UserDashboard = () => {
 
   // Function to open tax token as PDF in new tab
   const downloadTaxTokenAsPDF = useCallback((tokenData) => {
+    startDownload();
     const qrUrl = generateQRCode(JSON.stringify(tokenData));
     
     const htmlContent = `
@@ -69,7 +71,7 @@ const UserDashboard = () => {
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: white;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -314,11 +316,13 @@ const UserDashboard = () => {
     if (newWindow) {
       newWindow.document.write(htmlContent);
       newWindow.document.close();
+      endDownload();
     }
-  }, [generateQRCode]);
+  }, [generateQRCode, startDownload, endDownload]);
 
   // Function to open card as PDF in new tab
   const downloadCardAsPDF = useCallback((cardType, cardData, backData = null, gradientColors = '#006A4E, #28A745, #006A4E', backGradient = '#004A35, #1D7A3A, #004A35') => {
+    startDownload();
     const qrUrl = generateQRCode(JSON.stringify(cardData));
     const backQrUrl = backData ? generateQRCode(JSON.stringify(backData)) : qrUrl;
     
@@ -333,7 +337,7 @@ const UserDashboard = () => {
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+            background: white;
             min-height: 100vh;
             padding: 40px 20px;
           }
@@ -760,8 +764,9 @@ const UserDashboard = () => {
     if (newWindow) {
       newWindow.document.write(htmlContent);
       newWindow.document.close();
+      endDownload();
     }
-  }, [generateQRCode]);
+  }, [generateQRCode, startDownload, endDownload]);
 
   // Handlers optimized to avoid creating new inline functions inside lists
   const handleToggleVehicleFlip = useCallback((e) => {
