@@ -7,7 +7,7 @@ import {
   Fingerprint,
   CalendarCheck,
   CreditCard,
-  QrCode,
+  Calculator,
   Robot,
   ArrowRight,
   CheckCircle,
@@ -86,31 +86,37 @@ const Homepage = () => {
 
   const features = [
     {
+      id: 'driving_license',
       icon: <IdentificationCard size={32} weight="duotone" />,
       title: t.drivingLicense,
       description: t.drivingLicenseDesc,
     },
     {
+      id: 'face_verification',
       icon: <Fingerprint size={32} weight="duotone" />,
       title: t.faceVerification,
       description: t.faceVerificationDesc,
     },
     {
+      id: 'slot_booking',
       icon: <CalendarCheck size={32} weight="duotone" />,
       title: t.slotBooking,
       description: t.slotBookingDesc,
     },
     {
+      id: 'payment_system',
       icon: <CreditCard size={32} weight="duotone" />,
       title: t.paymentSystem,
       description: t.paymentSystemDesc,
     },
     {
-      icon: <QrCode size={32} weight="duotone" />,
-      title: t.qrPoliceCheck,
-      description: t.qrPoliceCheckDesc,
+      id: 'cost_calculator',
+      icon: <Calculator size={32} weight="duotone" />,
+      title: t.costCalculator,
+      description: t.costCalculatorDesc,
     },
     {
+      id: 'chatbot',
       icon: <Robot size={32} weight="duotone" />,
       title: t.chatbot,
       description: t.chatbotDesc,
@@ -343,7 +349,14 @@ const Homepage = () => {
                 {language === 'en' ? 'Our Services' : 'আমাদের সেবা'}
               </span>
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-extrabold mb-6 bg-gradient-to-r from-gray-800 via-primary to-gray-800 dark:from-white dark:via-green-400 dark:to-white bg-clip-text text-transparent">
+            <h2 
+              className={`text-4xl md:text-5xl font-extrabold mb-6 ${
+                language === 'en' 
+                  ? 'bg-gradient-to-r from-gray-800 via-primary to-gray-800 dark:from-white dark:via-green-400 dark:to-white bg-clip-text text-transparent' 
+                  : 'text-primary dark:text-green-400'
+              }`}
+              style={{ fontFamily: "'Noto Sans Bengali', 'Segoe UI', sans-serif" }}
+            >
               {t.features}
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
@@ -360,6 +373,7 @@ const Homepage = () => {
                 icon={feature.icon}
                 title={feature.title}
                 description={feature.description}
+                featureId={feature.id}
                 delay={index * 0.1}
               />
             ))}

@@ -49,17 +49,8 @@ const Signup = () => {
             transition={{ delay: 0.2 }}
             className="text-2xl font-bold mb-3 leading-tight text-gray-800 dark:text-white"
           >
-            {t.tagline}
+            {t.authTagline}
           </motion.h2>
-          
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-base text-gray-600 dark:text-gray-300 mb-4"
-          >
-            {t.subtitle}
-          </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -71,15 +62,15 @@ const Signup = () => {
             <ul className="space-y-2">
               <li className="flex items-center gap-2">
                 <span className="text-success">✓</span>
-                <span className="text-gray-700 dark:text-gray-200">{language === 'en' ? 'Fast & Transparent' : 'দ্রুত এবং স্বচ্ছ'}</span>
+                <span className="text-gray-700 dark:text-gray-200">{t.authBenefit1}</span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-success">✓</span>
-                <span className="text-gray-700 dark:text-gray-200">{language === 'en' ? '24/7 Online Services' : '২৪/৭ অনলাইন সেবা'}</span>
+                <span className="text-gray-700 dark:text-gray-200">{t.authBenefit2}</span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-success">✓</span>
-                <span className="text-gray-700 dark:text-gray-200">{language === 'en' ? 'Secure Platform' : 'নিরাপদ প্ল্যাটফর্ম'}</span>
+                <span className="text-gray-700 dark:text-gray-200">{t.authBenefit3}</span>
               </li>
             </ul>
           </motion.div>

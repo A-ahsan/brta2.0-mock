@@ -1,8 +1,21 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'phosphor-react';
+import { useNavigate } from 'react-router-dom';
 
-const FeatureCard = ({ icon, title, description, delay = 0 }) => {
+const FeatureCard = ({ icon, title, description, delay = 0, featureId = '' }) => {
+  const navigate = useNavigate();
+
+  const getFeatureId = () => {
+    if (featureId) return featureId;
+    // Generate ID from title
+    return title.toLowerCase().replace(/\s+/g, '_').replace(/[&]/g, 'and');
+  };
+
+  const handleClick = () => {
+    navigate(`/feature/${getFeatureId()}`);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -10,6 +23,7 @@ const FeatureCard = ({ icon, title, description, delay = 0 }) => {
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
       whileHover={{ y: -12, scale: 1.03 }}
+      onClick={handleClick}
       className="group relative bg-gradient-to-br from-white via-white to-gray-50/50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900/50 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 dark:border-gray-700 hover:border-primary/30 dark:hover:border-primary/50 overflow-hidden cursor-pointer"
     >
       {/* Animated background gradient on hover */}

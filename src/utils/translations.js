@@ -8,9 +8,17 @@ export const translations = {
     signup: 'Sign Up',
     logout: 'Logout',
     
-    // Hero Section
+    // Hero Section - Homepage
     tagline: 'Smart Roads. Smart Drivers. Smart Traffic. Smart Bangladesh.',
     subtitle: 'One Unified Vehicle & License Management Portal',
+    
+    // Auth Page Tagline - for Login/Signup
+    authTagline: 'Streamlined Vehicle & License Management',
+    authSubtitle: 'Fast, Transparent, and Secure Online Services',
+    authBenefit1: 'Fast & Transparent',
+    authBenefit2: '24/7 Online Services',
+    authBenefit3: 'Secure Platform',
+    
     cta: 'Get Started',
     noDalalNoDelay: 'NO DALAL, NO DELAY',
     
@@ -24,8 +32,8 @@ export const translations = {
     slotBookingDesc: 'Book your test slots at your convenience',
     paymentSystem: 'Payment System',
     paymentSystemDesc: 'Secure online payment integration',
-    qrPoliceCheck: 'QR Police Check',
-    qrPoliceCheckDesc: 'Instant vehicle verification for law enforcement',
+    costCalculator: 'Cost Calculator',
+    costCalculatorDesc: 'Calculate fees and costs for licenses and registrations',
     chatbot: 'AI Chatbot',
     chatbotDesc: '24/7 intelligent assistant for your queries',
     
@@ -75,9 +83,17 @@ export const translations = {
     signup: 'সাইন আপ',
     logout: 'লগআউট',
     
-    // Hero Section
+    // Hero Section - Homepage
     tagline: 'স্মার্ট রাস্তা। স্মার্ট ড্রাইভার। স্মার্ট ট্রাফিক। স্মার্ট বাংলাদেশ।',
     subtitle: 'একটি একীভূত যানবাহন এবং লাইসেন্স ব্যবস্থাপনা পোর্টাল',
+    
+    // Auth Page Tagline - for Login/Signup
+    authTagline: 'যানবাহন ও লাইসেন্স ব্যবস্থাপনা সহজীকৃত',
+    authSubtitle: 'দ্রুত, স্বচ্ছ এবং নিরাপদ অনলাইন সেবা',
+    authBenefit1: 'দ্রুত এবং স্বচ্ছ',
+    authBenefit2: '২৪/৭ অনলাইন সেবা',
+    authBenefit3: 'নিরাপদ প্ল্যাটফর্ম',
+    
     cta: 'শুরু করুন',
     noDalalNoDelay: 'কোন দালাল নেই, কোন বিলম্ব নেই',
     
@@ -91,8 +107,8 @@ export const translations = {
     slotBookingDesc: 'আপনার সুবিধামত পরীক্ষার স্লট বুক করুন',
     paymentSystem: 'পেমেন্ট সিস্টেম',
     paymentSystemDesc: 'নিরাপদ অনলাইন পেমেন্ট ইন্টিগ্রেশন',
-    qrPoliceCheck: 'QR পুলিশ চেক',
-    qrPoliceCheckDesc: 'আইন প্রয়োগকারীদের জন্য তাৎক্ষণিক যানবাহন যাচাইকরণ',
+    costCalculator: 'খরচ ক্যালকুলেটর',
+    costCalculatorDesc: 'লাইসেন্স এবং নিবন্ধনের জন্য ফি এবং খরচ গণনা করুন',
     chatbot: 'AI চ্যাটবট',
     chatbotDesc: 'আপনার প্রশ্নের জন্য ২৪/৭ বুদ্ধিমান সহায়ক',
     
