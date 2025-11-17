@@ -100,7 +100,7 @@ const PoliceVerification = () => {
         <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-xl">
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white mb-2 flex items-center gap-2 sm:gap-3">
             <div className="p-1.5 sm:p-2 bg-gradient-to-br from-primary to-green-600 rounded-xl">
-              <QrCode size={24} className="sm:w-8 sm:h-8" weight="duotone" className="text-white" />
+              <QrCode size={24} weight="duotone" className="text-white sm:w-8 sm:h-8" />
             </div>
             <span className="break-words">{language === 'en' ? 'Vehicle Verification' : 'যানবাহন যাচাইকরণ'}</span>
           </h2>
@@ -116,9 +116,10 @@ const PoliceVerification = () => {
             <div className="absolute inset-0 flex items-center justify-center">
               <motion.div
                 animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", repeatType: "loop" }}
+                style={{ transform: 'translateZ(0)', willChange: 'transform' }}
               >
-                <QrCode size={80} className="sm:w-28 sm:h-28 lg:w-36 lg:h-36" weight="duotone" className="text-primary opacity-30 group-hover:opacity-50 transition-opacity" />
+                <QrCode size={80} weight="duotone" className="sm:w-28 sm:h-28 lg:w-36 lg:h-36 text-primary opacity-30 group-hover:opacity-50 transition-opacity" />
               </motion.div>
             </div>
             <div className="relative text-center">
