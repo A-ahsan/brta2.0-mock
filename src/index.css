@@ -8,6 +8,11 @@
   box-sizing: border-box;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 body {
   font-family: 'Inter', 'Noto Sans Bengali', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;

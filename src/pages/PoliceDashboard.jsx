@@ -27,7 +27,7 @@ const PoliceDashboard = () => {
   const { language } = useLanguage();
   const t = translations[language];
   const [showNotifications, setShowNotifications] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 1024);
 
   const notifications = [
     "Incident reported at checkpoint.",
@@ -79,32 +79,34 @@ const PoliceDashboard = () => {
         animate={{ y: 0 }}
         className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl shadow-lg border-b border-gray-200/50 dark:border-gray-700/50"
       >
-        <div className="px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-4">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
             >
-              <List size={24} weight="bold" />
+              <List size={20} className="sm:w-6 sm:h-6" weight="bold" />
             </motion.button>
-            <div className="flex items-center gap-3">
-              <img src="/brta.png" alt="BRTA Logo" className="h-10 w-10" />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <img src="/brta.png" alt="BRTA Logo" className="h-8 w-8 sm:h-10 sm:w-10" />
               <div>
-                <h1 className="text-xl font-bold text-primary dark:text-green-400">BRTA 2.0 - {t.policeDashboard}</h1>
+                <h1 className="text-sm sm:text-xl font-bold text-primary dark:text-green-400">
+                  <span className="hidden sm:inline">BRTA 2.0 - </span>{t.policeDashboard}
+                </h1>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               className="relative p-2 rounded-full hover:bg-primary/10 transition"
               onClick={() => setShowNotifications(!showNotifications)}
               aria-label="Notifications"
             >
-              <Bell size={24} className="text-primary" />
-              <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 font-bold">{notifications.length}</span>
+              <Bell size={20} className="sm:w-6 sm:h-6 text-primary" />
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 font-bold min-w-[20px] text-center">{notifications.length}</span>
             </button>
             <ThemeLanguageToggler />
           </div>
@@ -117,7 +119,7 @@ const PoliceDashboard = () => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="absolute right-6 top-20 w-80 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl z-50 p-4"
+              className="absolute right-3 sm:right-6 top-16 sm:top-20 w-[calc(100vw-24px)] sm:w-80 max-w-md bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl z-50 p-4"
             >
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
@@ -144,23 +146,34 @@ const PoliceDashboard = () => {
         </AnimatePresence>
       </motion.header>
 
-      <div className="flex pt-20">
+      <div className="flex pt-16 sm:pt-20">
         {/* Sidebar */}
         <AnimatePresence>
           {sidebarOpen && (
-            <motion.aside
-              initial={{ x: -300 }}
-              animate={{ x: 0 }}
-              exit={{ x: -300 }}
-              className="fixed left-0 top-20 bottom-0 w-64 bg-white dark:bg-gray-900 shadow-xl p-6 overflow-y-auto z-40"
-            >
+            <>
+              {/* Mobile Overlay */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSidebarOpen(false)}
+                className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+              />
+              
+              <motion.aside
+                initial={{ x: -300 }}
+                animate={{ x: 0 }}
+                exit={{ x: -300 }}
+                className="fixed left-0 top-16 sm:top-20 bottom-0 w-64 sm:w-72 bg-white dark:bg-gray-900 shadow-xl p-4 sm:p-6 overflow-y-auto z-40"
+              >
               <nav className="space-y-2">
                 {menuItems.map((item) => (
                   <NavLink
                     key={item.id}
                     to={item.path}
+                    onClick={() => window.innerWidth < 1024 && setSidebarOpen(false)}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                      `flex items-center gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg transition-all ${
                         isActive
                           ? 'bg-primary text-white shadow-lg'
                           : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -169,8 +182,8 @@ const PoliceDashboard = () => {
                   >
                     {({ isActive }) => (
                       <>
-                        <item.icon size={24} weight={isActive ? 'fill' : 'regular'} />
-                        <span className="font-semibold">{item.label}</span>
+                        <item.icon size={20} className="sm:w-6 sm:h-6" weight={isActive ? 'fill' : 'regular'} />
+                        <span className="font-semibold text-sm sm:text-base">{item.label}</span>
                       </>
                     )}
                   </NavLink>
@@ -178,28 +191,29 @@ const PoliceDashboard = () => {
               </nav>
 
               {/* Logout Button */}
-              <div className="absolute bottom-6 left-6 right-6">
+              <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => navigate('/')}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-50 dark:bg-red-900/20 text-danger hover:bg-red-100 dark:hover:bg-red-900/40 rounded-xl font-semibold transition-all"
+                  className="w-full flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-red-50 dark:bg-red-900/20 text-danger hover:bg-red-100 dark:hover:bg-red-900/40 rounded-xl font-semibold transition-all text-sm sm:text-base"
                 >
-                  <SignOut size={24} weight="bold" />
+                  <SignOut size={20} className="sm:w-6 sm:h-6" weight="bold" />
                   {t.logout}
                 </motion.button>
               </div>
             </motion.aside>
+            </>
           )}
         </AnimatePresence>
 
         {/* Main Content */}
-        <main className={`flex-1 p-8 transition-all ${sidebarOpen ? 'ml-64' : 'ml-0'}`}>
+        <main className={`flex-1 p-3 sm:p-6 lg:p-8 transition-all ${sidebarOpen ? 'lg:ml-64' : 'ml-0'}`}>
           {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="grid md:grid-cols-4 gap-6 mb-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8"
           >
             <StatCard
               icon={<CheckCircle size={48} weight="duotone" />}

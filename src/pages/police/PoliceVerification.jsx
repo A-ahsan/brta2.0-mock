@@ -91,76 +91,76 @@ const PoliceVerification = () => {
   }, [searchQuery]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-gradient-to-br from-primary/5 via-transparent to-green-500/5 p-1 rounded-2xl"
       >
-        <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl">
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2 flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-primary to-green-600 rounded-xl">
-              <QrCode size={32} weight="duotone" className="text-white" />
+        <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-xl">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white mb-2 flex items-center gap-2 sm:gap-3">
+            <div className="p-1.5 sm:p-2 bg-gradient-to-br from-primary to-green-600 rounded-xl">
+              <QrCode size={24} className="sm:w-8 sm:h-8" weight="duotone" className="text-white" />
             </div>
-            {language === 'en' ? 'Vehicle Verification' : 'যানবাহন যাচাইকরণ'}
+            <span className="break-words">{language === 'en' ? 'Vehicle Verification' : 'যানবাহন যাচাইকরণ'}</span>
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-8">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-6 sm:mb-8">
             {language === 'en' ? 'Scan QR code or search by plate number to verify vehicle documents' : 'যানবাহনের নথি যাচাই করতে QR কোড স্ক্যান করুন বা প্লেট নম্বর দিয়ে অনুসন্ধান করুন'}
           </p>
 
           {/* QR Scanner */}
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="relative bg-gradient-to-br from-primary/10 to-primary-dark/10 dark:from-primary/20 dark:to-primary-dark/20 border-4 border-dashed border-primary/30 rounded-2xl p-16 mb-8 cursor-pointer group transition-all"
+            className="relative bg-gradient-to-br from-primary/10 to-primary-dark/10 dark:from-primary/20 dark:to-primary-dark/20 border-4 border-dashed border-primary/30 rounded-2xl p-8 sm:p-12 lg:p-16 mb-6 sm:mb-8 cursor-pointer group transition-all"
           >
             <div className="absolute inset-0 flex items-center justify-center">
               <motion.div
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <QrCode size={140} weight="duotone" className="text-primary opacity-30 group-hover:opacity-50 transition-opacity" />
+                <QrCode size={80} className="sm:w-28 sm:h-28 lg:w-36 lg:h-36" weight="duotone" className="text-primary opacity-30 group-hover:opacity-50 transition-opacity" />
               </motion.div>
             </div>
             <div className="relative text-center">
-              <p className="text-gray-600 dark:text-gray-400 font-semibold text-lg">
+              <p className="text-gray-600 dark:text-gray-400 font-semibold text-sm sm:text-base lg:text-lg px-2">
                 {language === 'en' ? 'Tap to scan QR code from vehicle smart card' : 'যানবাহন স্মার্ট কার্ড থেকে QR কোড স্ক্যান করতে ট্যাপ করুন'}
               </p>
             </div>
           </motion.div>
 
           {/* Divider */}
-          <div className="relative my-8">
+          <div className="relative my-6 sm:my-8">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t-2 border-gray-200 dark:border-gray-700"></div>
             </div>
             <div className="relative flex justify-center">
-              <span className="px-4 py-1 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 text-sm font-semibold rounded-full border-2 border-gray-200 dark:border-gray-700">
+              <span className="px-3 sm:px-4 py-1 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 text-xs sm:text-sm font-semibold rounded-full border-2 border-gray-200 dark:border-gray-700">
                 {language === 'en' ? 'OR' : 'অথবা'}
               </span>
             </div>
           </div>
 
           {/* Manual Search */}
-          <div className="space-y-4">
-            <label className="block text-base font-semibold text-gray-700 dark:text-gray-300">
+          <div className="space-y-3 sm:space-y-4">
+            <label className="block text-sm sm:text-base font-semibold text-gray-700 dark:text-gray-300">
               {language === 'en' ? 'Search by plate number:' : 'প্লেট নম্বর দিয়ে অনুসন্ধান করুন:'}
             </label>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                placeholder={language === 'en' ? 'Enter plate number... (e.g., ঢাকা মেট্রো-গ-১২৩৪৫৬)' : 'প্লেট নম্বর লিখুন... (যেমন, ঢাকা মেট্রো-গ-১২৩৪৫৬)'}
-                className="flex-1 px-5 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white transition-all text-lg"
+                placeholder={language === 'en' ? 'Enter plate number...' : 'প্লেট নম্বর লিখুন...'}
+                className="flex-1 px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white transition-all text-base sm:text-lg"
               />
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleSearch}
-                className="px-8 py-4 bg-gradient-to-r from-primary to-green-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-primary to-green-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
               >
-                <MagnifyingGlass size={24} weight="bold" />
+                <MagnifyingGlass size={20} className="sm:w-6 sm:h-6" weight="bold" />
                 {language === 'en' ? 'Search' : 'খুঁজুন'}
               </motion.button>
             </div>
@@ -171,53 +171,53 @@ const PoliceVerification = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-8 p-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-2xl border-2 border-gray-300 dark:border-gray-600 shadow-lg"
+              className="mt-6 sm:mt-8 p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-2xl border-2 border-gray-300 dark:border-gray-600 shadow-lg"
             >
-              <div className="flex items-start justify-between mb-6">
+              <div className="flex flex-col sm:flex-row items-start justify-between mb-4 sm:mb-6 gap-3">
                 <div>
-                  <h4 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+                  <h4 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 dark:text-white mb-1 sm:mb-2">
                     {language === 'en' ? 'Vehicle Details' : 'যানবাহনের বিবরণ'}
                   </h4>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm">
+                  <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm">
                     {language === 'en' ? 'Document verification completed' : 'নথি যাচাইকরণ সম্পন্ন'}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
                   {getStatusIcon(selectedVehicle.status)}
-                  <span className={`px-4 py-2 rounded-full text-sm font-bold border-2 ${getStatusColor(selectedVehicle.status)}`}>
+                  <span className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold border-2 whitespace-nowrap ${getStatusColor(selectedVehicle.status)}`}>
                     {t[selectedVehicle.status.toLowerCase()] || selectedVehicle.status}
                   </span>
                 </div>
               </div>
               
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div className="bg-white dark:bg-gray-800 p-4 rounded-xl">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl">
                     <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">{language === 'en' ? 'Plate Number' : 'প্লেট নম্বর'}</span>
-                    <p className="text-xl font-bold text-gray-800 dark:text-white mt-1">{selectedVehicle.plate}</p>
+                    <p className="text-base sm:text-lg lg:text-xl font-bold text-gray-800 dark:text-white mt-1 break-words">{selectedVehicle.plate}</p>
                   </div>
-                  <div className="bg-white dark:bg-gray-800 p-4 rounded-xl">
+                  <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl">
                     <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">{language === 'en' ? 'Model' : 'মডেল'}</span>
-                    <p className="text-xl font-bold text-gray-800 dark:text-white mt-1">{selectedVehicle.model}</p>
+                    <p className="text-base sm:text-lg lg:text-xl font-bold text-gray-800 dark:text-white mt-1">{selectedVehicle.model}</p>
                   </div>
-                  <div className="bg-white dark:bg-gray-800 p-4 rounded-xl">
+                  <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl">
                     <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">{language === 'en' ? 'Owner' : 'মালিক'}</span>
-                    <p className="text-xl font-bold text-gray-800 dark:text-white mt-1">{selectedVehicle.owner}</p>
+                    <p className="text-base sm:text-lg lg:text-xl font-bold text-gray-800 dark:text-white mt-1">{selectedVehicle.owner}</p>
                   </div>
                 </div>
                 
-                <div className="space-y-4">
-                  <div className="bg-white dark:bg-gray-800 p-4 rounded-xl">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl">
                     <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">{language === 'en' ? 'License Expiry' : 'লাইসেন্সের মেয়াদ'}</span>
-                    <p className="text-xl font-bold text-gray-800 dark:text-white mt-1">{selectedVehicle.licenseExpiry}</p>
+                    <p className="text-base sm:text-lg lg:text-xl font-bold text-gray-800 dark:text-white mt-1">{selectedVehicle.licenseExpiry}</p>
                   </div>
-                  <div className="bg-white dark:bg-gray-800 p-4 rounded-xl">
+                  <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl">
                     <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">{language === 'en' ? 'Insurance Status' : 'বীমার অবস্থা'}</span>
-                    <p className={`text-xl font-bold mt-1 ${selectedVehicle.insurance === 'Active' ? 'text-success' : 'text-danger'}`}>{selectedVehicle.insurance}</p>
+                    <p className={`text-base sm:text-lg lg:text-xl font-bold mt-1 ${selectedVehicle.insurance === 'Active' ? 'text-success' : 'text-danger'}`}>{selectedVehicle.insurance}</p>
                   </div>
-                  <div className="bg-white dark:bg-gray-800 p-4 rounded-xl">
+                  <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl">
                     <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">{language === 'en' ? 'Outstanding Fines' : 'বকেয়া জরিমানা'}</span>
-                    <p className={`text-xl font-bold mt-1 ${selectedVehicle.fines > 0 ? 'text-danger' : 'text-success'}`}>
+                    <p className={`text-base sm:text-lg lg:text-xl font-bold mt-1 ${selectedVehicle.fines > 0 ? 'text-danger' : 'text-success'}`}>
                       {selectedVehicle.fines} {language === 'en' ? 'fine(s)' : 'জরিমানা'}
                     </p>
                   </div>
