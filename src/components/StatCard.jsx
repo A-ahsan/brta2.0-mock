@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const StatCard = ({ icon, title, value, color = 'primary', trend }) => {
+const StatCard = React.memo(({ icon, title, value, color = 'primary', trend }) => {
   const colorClasses = {
     primary: 'from-primary via-green-600 to-primary-dark',
     success: 'from-green-500 via-green-600 to-green-700',
@@ -12,21 +12,15 @@ const StatCard = ({ icon, title, value, color = 'primary', trend }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+      initial={{ opacity: 0, scale: 0.95, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
       whileHover={{ 
-        scale: 1.05,
-        y: -5,
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)'
+        y: -5
       }}
-      className={`group relative bg-gradient-to-br ${colorClasses[color]} p-6 rounded-2xl shadow-xl text-white overflow-hidden border-2 border-white/20 backdrop-blur-sm`}
+      className={`group relative bg-gradient-to-br ${colorClasses[color]} p-6 rounded-2xl shadow-xl text-white overflow-hidden border-2 border-white/20 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl`}
+      style={{ transform: 'translateZ(0)' }}
     >
-      {/* Animated shine effect */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-        animate={{ x: ['-100%', '200%'] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-      />
       
       {/* Background icon */}
       <div className="absolute top-0 right-0 opacity-10 group-hover:opacity-20 transition-opacity duration-300">
@@ -74,6 +68,8 @@ const StatCard = ({ icon, title, value, color = 'primary', trend }) => {
       </div>
     </motion.div>
   );
-};
+});
 
-export default React.memo(StatCard);
+StatCard.displayName = 'StatCard';
+
+export default StatCard;

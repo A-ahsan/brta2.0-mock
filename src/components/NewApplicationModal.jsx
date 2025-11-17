@@ -45,12 +45,15 @@ function NewApplicationModal({ open, onClose, language = 'en' }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
         >
           <motion.div
             className="bg-white dark:bg-gray-950 rounded-2xl shadow-2xl p-8 w-full max-w-md relative border border-gray-200 dark:border-gray-800"
-            initial={{ scale: 0.8, opacity: 0 }}
+            initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
+            exit={{ scale: 0.95, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            style={{ transform: 'translateZ(0)' }}
           >
             <button className="absolute top-4 right-4 text-gray-400 hover:text-danger" onClick={onClose}>&times;</button>
             {/* Step 1: Vehicle Type */}

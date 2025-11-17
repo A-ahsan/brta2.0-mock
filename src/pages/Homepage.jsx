@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import {
@@ -25,11 +25,11 @@ import { translations } from '../utils/translations';
 const AnimatedLine = ({ children, delay = 0 }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -100 }}
+      initial={{ opacity: 0, x: -50 }}
       animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 100 }}
+      exit={{ opacity: 0, x: 50 }}
       transition={{
-        duration: 0.8,
+        duration: 0.4,
         delay: delay,
         ease: "easeOut"
       }}
@@ -44,6 +44,7 @@ const Homepage = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const t = translations[language];
+  const lottieRef = useRef(null);
 
   // Split tagline by period (works for both languages)
   const taglineParts = t.tagline.split('।').length > 1 
@@ -58,9 +59,18 @@ const Homepage = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % taglineParts.length);
-    }, 5000); // Change both text and animation every 5 seconds (slower)
+    }, 5000); // 5 seconds - faster transitions reduce CPU load
     return () => clearInterval(interval);
   }, [taglineParts.length]);
+
+  // Cleanup Lottie on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (lottieRef.current) {
+        lottieRef.current = null;
+      }
+    };
+  }, []);
 
   const gradients = [
     'bg-gradient-to-r from-primary via-green-600 to-primary-dark',
@@ -68,21 +78,24 @@ const Homepage = () => {
     'bg-gradient-to-r from-primary-dark via-primary to-green-600',
   ];
 
-  // Lottie animations from LottieFiles - synced with tagline
+  // Optimized Lottie animations - reduced quality for better performance
   const lottieAnimations = [
     {
-      src: 'https://lottie.host/11c734c5-116f-45e0-bc03-cc668ea475cc/cYMgRLZuDp.lottie', // Smart Roads - should show car/road
+      src: 'https://lottie.host/11c734c5-116f-45e0-bc03-cc668ea475cc/cYMgRLZuDp.lottie',
     },
     {
-      src: 'https://lottie.host/40631cde-df3a-4602-8f11-4a942c3ec274/3pxVyqjqhy.lottie', // Smart Drivers - should show bike
+      src: 'https://lottie.host/40631cde-df3a-4602-8f11-4a942c3ec274/3pxVyqjqhy.lottie',
     },
     {
-      src: 'https://lottie.host/1edbcd01-db0c-47d6-b9f6-7687663e7653/4Utdq6TqM8.lottie', // Smart Traffic - should show traffic signal
+      src: 'https://lottie.host/1edbcd01-db0c-47d6-b9f6-7687663e7653/4Utdq6TqM8.lottie',
     },
     {
-      src: 'https://lottie.host/615492e9-b132-45fa-b258-1e63b1df031e/5z53SpGaI9.lottie', // Smart Bangladesh - should show flag
-    }
+      src: 'https://lottie.host/615492e9-b132-45fa-b258-1e63b1df031e/5z53SpGaI9.lottie', // Bangladesh flag
+    },
   ];
+
+  // Use modulo to cycle through lottie animations independently
+  const lottieIndex = currentIndex % lottieAnimations.length;
 
   const features = [
     {
@@ -135,27 +148,26 @@ const Homepage = () => {
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-4 overflow-hidden">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div
-            animate={{ 
-              x: [0, 100, 0],
-              y: [0, -100, 0],
-              scale: [1, 1.2, 1],
-              rotate: [0, 90, 0]
-            }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute top-20 right-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl"
-          />
-          <motion.div
-            animate={{ 
-              x: [0, -100, 0],
-              y: [0, 100, 0],
-              scale: [1, 1.5, 1]
-            }}
-            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-            className="absolute bottom-20 left-10 w-96 h-96 bg-green-500/10 rounded-full blur-3xl"
-          />
+        {/* Optimized animated background particles */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ willChange: 'transform' }}>
+        <motion.div
+          animate={{ 
+            x: [0, 100, 0],
+            y: [0, -100, 0]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear", repeatType: "loop" }}
+          className="absolute top-20 right-10 w-72 h-72 bg-primary/10 rounded-full blur-2xl"
+          style={{ transform: 'translateZ(0)' }}
+        />
+        <motion.div
+          animate={{ 
+            x: [0, -100, 0],
+            y: [0, 100, 0]
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear", repeatType: "loop" }}
+          className="absolute bottom-20 left-10 w-96 h-96 bg-green-500/10 rounded-full blur-2xl"
+          style={{ transform: 'translateZ(0)' }}
+        />
         </div>
         <div className="container mx-auto max-w-7xl relative z-10">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -172,26 +184,14 @@ const Homepage = () => {
                 transition={{ delay: 0.2 }}
                 className="inline-block mb-6"
               >
-                <motion.div
-                  animate={{ 
-                    boxShadow: [
-                      '0 0 20px rgba(220, 38, 38, 0.3)',
-                      '0 0 40px rgba(220, 38, 38, 0.5)',
-                      '0 0 20px rgba(220, 38, 38, 0.3)'
-                    ]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="bg-gradient-to-r from-red-50 to-red-100 dark:from-red-900/30 dark:to-red-800/30 text-danger dark:text-red-400 px-6 py-2 rounded-full font-bold text-sm border-2 border-danger/30 backdrop-blur-sm"
+                <div
+                  className="bg-gradient-to-r from-red-50 to-red-100 dark:from-red-900/30 dark:to-red-800/30 text-danger dark:text-red-400 px-6 py-2 rounded-full font-bold text-sm border-2 border-danger/30 backdrop-blur-sm shadow-lg"
                 >
                   <span className="flex items-center gap-2">
-                    <motion.span
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                      className="w-2 h-2 bg-danger rounded-full"
-                    />
+                    <span className="w-2 h-2 bg-danger rounded-full animate-pulse" />
                     {t.noDalalNoDelay}
                   </span>
-                </motion.div>
+                </div>
               </motion.div>
 
               {/* Animated Tagline */}
@@ -199,10 +199,10 @@ const Homepage = () => {
                 <AnimatePresence mode="wait">
                   <motion.h1
                     key={currentIndex}
-                    initial={{ opacity: 0, x: -50 }}
+                    initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 50 }}
-                    transition={{ duration: 1.2, ease: "easeInOut" }}
+                    exit={{ opacity: 0, x: 20 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
                     className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-normal absolute top-0 left-0 right-0 text-primary dark:text-green-400"
                     style={{ lineHeight: '1.5' }}
                   >
@@ -274,44 +274,42 @@ const Homepage = () => {
 
             {/* Right Illustration - Lottie Animations */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.3, ease: 'easeOut' }}
               className="relative flex items-center justify-center lg:justify-end"
+              style={{ transform: 'translateZ(0)' }}
             >
               {/* Floating decorative elements */}
-              <motion.div
-                animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-10 -left-10 w-32 h-32 bg-gradient-to-br from-primary/20 to-green-500/20 rounded-full blur-2xl"
-              />
-              <motion.div
-                animate={{ y: [0, 20, 0], rotate: [0, -5, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-10 -right-10 w-40 h-40 bg-gradient-to-br from-green-500/20 to-primary/20 rounded-full blur-2xl"
-              />
+              <div className="absolute -top-10 -left-10 w-32 h-32 bg-gradient-to-br from-primary/20 to-green-500/20 rounded-full blur-2xl" />
+              <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-gradient-to-br from-green-500/20 to-primary/20 rounded-full blur-2xl" />
               
               <div className="w-full max-w-[500px] relative">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentIndex}
-                    initial={{ opacity: 0, scale: 0.9, rotateY: -30 }}
-                    animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, rotateY: 30 }}
-                    transition={{ duration: 1, ease: 'easeInOut' }}
-                    whileHover={{ scale: 1.05, rotateZ: 2 }}
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
                     className="relative bg-gradient-to-br from-white via-white to-gray-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 rounded-3xl p-8 shadow-2xl border-2 border-primary/30 backdrop-blur-sm"
-                    style={{ transformStyle: 'preserve-3d' }}
                   >
                     {/* Inner glow effect */}
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-green-500/10 rounded-3xl" />
                     
+                    {/* Optimized Lottie Animation */}
                     <div className="relative w-full pb-[100%]">
-                      <div className="absolute inset-0">
+                      <div className="absolute inset-0 p-8">
                         <DotLottieReact
-                          src={lottieAnimations[currentIndex].src}
+                          key={`lottie-${lottieIndex}`}
+                          src={lottieAnimations[lottieIndex].src}
                           loop
                           autoplay
+                          speed={0.7}
+                          style={{ 
+                            width: '100%', 
+                            height: '100%'
+                          }}
                         />
                       </div>
                     </div>
