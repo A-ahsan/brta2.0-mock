@@ -15,10 +15,13 @@ import {
   ArrowsClockwise,
   Phone,
   MapPin,
-  X
+  X,
+  CheckCircle
 } from 'phosphor-react';
 import { useLanguage, useDownload } from '../contexts/AppContext';
+import { translations } from '../utils/translations';
 import NewApplicationModal from '../components/NewApplicationModal';
+import ThemeLanguageToggler from '../components/ThemeLanguageToggler';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
@@ -26,10 +29,10 @@ const UserDashboard = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { isDownloading, startDownload, endDownload } = useDownload();
-  const t = require('../utils/translations')[language];
+  const t = translations[language] || translations.en;
   
   const [activeTab, setActiveTab] = useState('license');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [flippedLicense, setFlippedLicense] = useState(false);
   const [flippedVehicles, setFlippedVehicles] = useState({});
@@ -52,11 +55,407 @@ const UserDashboard = () => {
   // Function to download card as PDF
   const downloadCardAsPDF = useCallback((cardType, cardData, backData = null, gradientColors = '#006A4E, #28A745, #006A4E', backGradient = '#004A35, #1D7A3A, #004A35') => {
     startDownload();
-    setTimeout(() => {
-      // PDF generation logic here
+    
+    // Create a new window to render the card for PDF generation
+    const printWindow = window.open('', '_blank');
+    
+    if (!printWindow) {
+      alert('Please allow pop-ups to download the PDF');
       endDownload();
-    }, 1000);
-  }, []);
+      return;
+    }
+
+    // Generate HTML content showing BOTH front and back of the card
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>${cardType}</title>
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+          body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+          }
+          .container {
+            max-width: 900px;
+            margin: 0 auto;
+          }
+          .card {
+            width: 100%;
+            margin-bottom: 30px;
+            padding: 40px;
+            background: linear-gradient(135deg, ${gradientColors});
+            color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            page-break-after: always;
+          }
+          .card.back {
+            background: linear-gradient(135deg, ${backGradient});
+          }
+          .user-photo {
+            width: 120px;
+            height: 140px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+            border: 3px solid rgba(255,255,255,0.5);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: rgba(255,255,255,0.6);
+          }
+          .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+          }
+          .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+          }
+          .header p {
+            font-size: 14px;
+            opacity: 0.9;
+          }
+          .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+          }
+          .field {
+            margin-bottom: 15px;
+          }
+          .field.full {
+            grid-column: 1 / -1;
+          }
+          .label {
+            font-size: 12px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+          }
+          .value {
+            font-size: 18px;
+            font-weight: bold;
+          }
+          .qr-section {
+            margin-top: 30px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid rgba(255,255,255,0.3);
+          }
+          .qr-section img {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+          }
+          .back-details {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+          }
+          .back-info {
+            flex: 1;
+            max-width: 400px;
+          }
+          .print-btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto 0;
+            padding: 12px 24px;
+            background: #fbbf24;
+            color: #166534;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+          }
+          .print-btn:hover {
+            background: #f59e0b;
+          }
+          @media print {
+            body { padding: 0; background: white; }
+            .card { 
+              box-shadow: none; 
+              margin-bottom: 50px;
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
+              color-adjust: exact;
+            }
+            .print-btn { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <!-- FRONT SIDE -->
+          <div class="card">
+            <div class="header">
+              <h1>${cardType.replace(/_/g, ' ')}</h1>
+              <p>Bangladesh Road Transport Authority</p>
+            </div>
+            <div style="display: flex; gap: 30px; align-items: flex-start;">
+              <div class="user-photo">👤</div>
+              <div class="content" style="flex: 1;">
+                ${Object.entries(cardData).map(([key, value]) => `
+                  <div class="field ${key.includes('Plate') || key.includes('Model') ? 'full' : ''}">
+                    <div class="label">${key}</div>
+                    <div class="value">${value}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+          
+          <!-- BACK SIDE -->
+          <div class="card back">
+            <div class="header">
+              <h1>${cardType.replace(/_/g, ' ')} - Back Side</h1>
+              <p>Detailed Information</p>
+            </div>
+            <div class="back-details">
+              <div class="qr-section" style="border: none; padding: 0; margin: 0;">
+                <img src="${generateQRCode(Object.values(cardData).join('|'))}" alt="QR Code" style="width: 200px; height: 200px;" />
+                <p style="margin-top: 10px; font-size: 12px;">Scan for Verification</p>
+              </div>
+              <div class="back-info">
+                <div class="field">
+                  <div class="label">Address</div>
+                  <div class="value" style="font-size: 16px;">123 Main Street, Dhaka-1000</div>
+                </div>
+                <div class="field">
+                  <div class="label">Emergency Contact</div>
+                  <div class="value" style="font-size: 16px;">+880 1711-123456</div>
+                </div>
+                <div class="field">
+                  <div class="label">Restrictions</div>
+                  <div class="value" style="font-size: 16px;">None</div>
+                </div>
+              </div>
+            </div>
+            <div style="text-align: center; padding-top: 20px; border-top: 2px solid rgba(255,255,255,0.3);">
+              <p style="font-size: 12px; opacity: 0.8; margin-bottom: 10px;">This is an official document of Bangladesh Road Transport Authority</p>
+              <p style="font-size: 12px; opacity: 0.8;">For verification, visit: www.brta.gov.bd</p>
+            </div>
+          </div>
+        </div>
+        <button class="print-btn" onclick="window.print()">🖨️ Print Cards</button>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+    
+    // End download state after a short delay
+    setTimeout(() => {
+      endDownload();
+    }, 1500);
+  }, [generateQRCode, startDownload, endDownload]);
+
+  // Function to download tax token as PDF
+  const downloadTaxTokenAsPDF = useCallback((tokenData) => {
+    startDownload();
+    
+    const printWindow = window.open('', '_blank');
+    
+    if (!printWindow) {
+      alert('Please allow pop-ups to download the PDF');
+      endDownload();
+      return;
+    }
+
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Tax Token - ${tokenData['Token No']}</title>
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+          body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: white;
+          }
+          .card {
+            width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #16a34a, #15803d, #166534);
+            color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+          }
+          .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+          }
+          .header h1 {
+            font-size: 28px;
+            margin-bottom: 3px;
+            color: #fbbf24;
+          }
+          .header h2 {
+            font-size: 20px;
+            margin-bottom: 5px;
+          }
+          .header p {
+            font-size: 12px;
+            opacity: 0.9;
+          }
+          .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+          }
+          .field {
+            margin-bottom: 10px;
+          }
+          .field.full {
+            grid-column: 1 / -1;
+          }
+          .label {
+            font-size: 10px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+          }
+          .value {
+            font-size: 16px;
+            font-weight: bold;
+          }
+          .amount {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #fbbf24;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+          }
+          .qr-section {
+            margin-top: 20px;
+            text-align: center;
+            padding-top: 15px;
+            border-top: 2px solid rgba(255,255,255,0.3);
+          }
+          .qr-section img {
+            background: white;
+            padding: 8px;
+            border-radius: 10px;
+            width: 120px;
+            height: 120px;
+          }
+          .status {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #86efac;
+            color: #166534;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 16px;
+          }
+          .print-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto 0;
+            padding: 12px 24px;
+            background: #fbbf24;
+            color: #166534;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+          }
+          .print-btn:hover {
+            background: #f59e0b;
+          }
+          @media print {
+            body { padding: 0; }
+            .card { 
+              box-shadow: none;
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
+              color-adjust: exact;
+            }
+            .print-btn { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="card">
+          <div class="header">
+            <h1>TAX TOKEN</h1>
+            <h2>বাংলাদেশ সড়ক পরিবহন কর্তৃপক্ষ</h2>
+            <p>Bangladesh Road Transport Authority</p>
+          </div>
+          <div class="amount">${tokenData['Amount']}</div>
+          <div class="content">
+            <div class="field full">
+              <div class="label">Token No.</div>
+              <div class="value">${tokenData['Token No']}</div>
+            </div>
+            <div class="field full">
+              <div class="label">Vehicle</div>
+              <div class="value">${tokenData['Vehicle']}</div>
+            </div>
+            <div class="field full">
+              <div class="label">Registration Plate</div>
+              <div class="value">${tokenData['Registration Plate']}</div>
+            </div>
+            <div class="field">
+              <div class="label">Owner Name</div>
+              <div class="value">${tokenData['Owner Name']}</div>
+            </div>
+            <div class="field">
+              <div class="label">Driving License No</div>
+              <div class="value">${tokenData['Driving License No']}</div>
+            </div>
+            <div class="field">
+              <div class="label">Issue Date</div>
+              <div class="value">${tokenData['Issue Date']}</div>
+            </div>
+            <div class="field">
+              <div class="label">Valid Until</div>
+              <div class="value">${tokenData['Valid Until']}</div>
+            </div>
+            <div class="field full" style="text-align: center; margin-top: 10px;">
+              <div class="label">Status</div>
+              <div class="status">✓ ${tokenData['Status']}</div>
+            </div>
+          </div>
+          <div class="qr-section">
+            <img src="${generateQRCode(Object.values(tokenData).join('|'))}" alt="QR Code" />
+            <p style="margin-top: 10px; font-size: 12px;">Scan to Verify</p>
+          </div>
+        </div>
+        <button class="print-btn" onclick="window.print()">🖨️ Print This Token</button>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+    
+    setTimeout(() => {
+      endDownload();
+    }, 1500);
+  }, [generateQRCode, startDownload, endDownload]);
 
   // Handlers
   const handleToggleVehicleFlip = useCallback((e) => {
@@ -77,10 +476,12 @@ const UserDashboard = () => {
       'Vehicle Model': model,
       'Registration Plate': plate,
       'Year': year,
-      'Owner': 'John Doe',
+      'Owner Name': 'John Doe',
       'Card No': `VC-${parseInt(id, 10).toString().padStart(6, '0')}`,
-      'Status': status
-    });
+      'Status': status,
+      'Issued Date': `10/03/${year}`,
+      'Expiry Date': '31/12/2030'
+    }, null, '#3B82F6, #2563EB, #1D4ED8', '#1E40AF, #1E3A8A, #1E3A8A');
   }, [downloadCardAsPDF]);
 
   const handleShowTaxToken = useCallback((e) => {
@@ -329,19 +730,9 @@ const UserDashboard = () => {
                 <IdentificationCard size={24} weight="duotone" className="text-primary" />
                 {language === 'en' ? 'My Driving License' : 'আমার ড্রাইভিং লাইসেন্স'}
               </h3>
-              {/* 3D Flip Card Container */}
-              <div className="perspective-1000">
-                <motion.div
-                  className="relative w-full h-[400px]"
-                  style={{ transformStyle: 'preserve-3d' }}
-                  animate={{ rotateY: flippedLicense ? 180 : 0 }}
-                  transition={{ duration: 0.6, ease: 'easeInOut' }}
-                >
-                  {/* Front Side */}
-                  <div
-                    className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary via-green-600 to-primary-dark p-8 rounded-2xl shadow-2xl overflow-hidden"
-                    style={{ backfaceVisibility: 'hidden' }}
-                  >
+              
+              {/* Front Side */}
+              <div className={`${flippedLicense ? 'hidden' : 'block'} bg-gradient-to-br from-primary via-green-600 to-primary-dark p-8 rounded-2xl shadow-2xl text-white relative overflow-hidden`}>
                     <div className="relative z-10 text-white">
                       <div className="flex justify-between items-start mb-6">
                         <div>
@@ -396,7 +787,7 @@ const UserDashboard = () => {
                           <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            onClick={() => setFlippedLicense(!flippedLicense)}
+                            onClick={() => setFlippedLicense(prev => !prev)}
                             className="flex-1 px-3 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-1.5"
                           >
                             <ArrowsClockwise size={16} />
@@ -424,46 +815,47 @@ const UserDashboard = () => {
                     </div>
                   </div>
                   {/* Back Side */}
-                  <div
-                    className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary-dark via-green-700 to-primary p-8 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
-                    style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-                  >
-                    <div className="relative z-10 text-white">
+                  <div className={`${!flippedLicense ? 'hidden' : 'block'} bg-gradient-to-br from-primary-dark via-green-700 to-primary p-8 rounded-2xl shadow-2xl text-white relative overflow-hidden`}>
+                    <div className="absolute inset-0 opacity-10">
+                      <div className="absolute top-0 right-0 w-48 h-48 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
+                      <div className="absolute bottom-0 left-0 w-32 h-32 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
+                    </div>
+                    
+                    <div className="relative z-10">
                       <h4 className="text-xl font-bold mb-6 text-center">{language === 'en' ? 'License Details' : 'লাইসেন্সের বিবরণ'}</h4>
-                      <div className="flex justify-center items-center gap-8 mb-6">
+                      <div className="flex justify-center items-center gap-6 mb-4">
                         {/* QR Code */}
-                        <div className="bg-white p-4 rounded-xl">
+                        <div className="bg-white p-3 rounded-xl">
                           <img 
                             src={generateQRCode('DL-123456789|John Doe|Professional|14/06/2028')} 
                             alt="QR Code" 
-                            className="w-40 h-40"
+                            className="w-32 h-32"
                           />
-                          <p className="text-xs text-center mt-2 text-gray-800 font-semibold">{language === 'en' ? 'Scan for Verification' : 'যাচাইয়ের জন্য স্ক্যান করুন'}</p>
+                          <p className="text-xs text-center mt-1 text-gray-800 font-semibold">{language === 'en' ? 'Scan' : 'স্ক্যান'}</p>
                         </div>
                         {/* Additional Info */}
-                        <div className="space-y-3">
+                        <div className="space-y-2">
                           <div>
-                            <p className="text-xs opacity-80 uppercase tracking-wider mb-1">{language === 'en' ? 'Address' : 'ঠিকানা'}</p>
+                            <p className="text-xs opacity-80 uppercase tracking-wider mb-0.5">{language === 'en' ? 'Address' : 'ঠিকানা'}</p>
                             <p className="text-sm font-semibold">123 Main Street, Dhaka-1000</p>
                           </div>
                           <div>
-                            <p className="text-xs opacity-80 uppercase tracking-wider mb-1">{language === 'en' ? 'Emergency Contact' : 'জরুরি যোগাযোগ'}</p>
+                            <p className="text-xs opacity-80 uppercase tracking-wider mb-0.5">{language === 'en' ? 'Emergency' : 'জরুরি'}</p>
                             <p className="text-sm font-semibold">+880 1711-123456</p>
                           </div>
                           <div>
-                            <p className="text-xs opacity-80 uppercase tracking-wider mb-1">{language === 'en' ? 'Restrictions' : 'সীমাবদ্ধতা'}</p>
+                            <p className="text-xs opacity-80 uppercase tracking-wider mb-0.5">{language === 'en' ? 'Restrictions' : 'সীমাবদ্ধতা'}</p>
                             <p className="text-sm font-semibold">{language === 'en' ? 'None' : 'কোনটিই নয়'}</p>
                           </div>
                         </div>
                       </div>
-                      <div className="mt-auto pt-4 border-t border-white/30">
-                        <p className="text-xs opacity-80 text-center mb-2">{language === 'en' ? 'This is an official document of Bangladesh Road Transport Authority' : 'এটি বাংলাদেশ সড়ক পরিবহন কর্তৃপক্ষের একটি অফিসিয়াল ডকুমেন্ট'}</p>
-                        <p className="text-xs opacity-80 text-center mb-3">{language === 'en' ? 'For verification, visit: www.brta.gov.bd' : 'যাচাইয়ের জন্য দেখুন: www.brta.gov.bd'}</p>
+                      <div className="mt-auto pt-3 border-t border-white/30">
+                        <p className="text-xs opacity-80 text-center mb-2">{language === 'en' ? 'Official document of BRTA' : 'বিআরটিএ অফিসিয়াল ডকুমেন্ট'}</p>
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          onClick={() => setFlippedLicense(!flippedLicense)}
-                          className="w-full px-3 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-1.5"
+                          onClick={() => setFlippedLicense(prev => !prev)}
+                          className="w-full px-3 py-2.5 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-1.5"
                         >
                           <ArrowsClockwise size={16} />
                           {language === 'en' ? 'Flip' : 'উল্টান'}
@@ -471,8 +863,6 @@ const UserDashboard = () => {
                       </div>
                     </div>
                   </div>
-                </motion.div>
-              </div>
             </motion.div>
 
             {/* Vehicle Smart Cards */}
