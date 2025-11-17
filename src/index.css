@@ -19,6 +19,27 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Performance optimizations */
+* {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
+
+/* Hardware acceleration for animations */
+.motion-safe {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Optimize scroll performance */
+body {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
 body.downloading {
   background-color: white !important;
 }

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'phosphor-react';
 import { useNavigate } from 'react-router-dom';
 
-const FeatureCard = ({ icon, title, description, delay = 0, featureId = '' }) => {
+const FeatureCard = React.memo(({ icon, title, description, delay = 0, featureId = '' }) => {
   const navigate = useNavigate();
 
   const getFeatureId = () => {
@@ -20,11 +20,12 @@ const FeatureCard = ({ icon, title, description, delay = 0, featureId = '' }) =>
     <motion.div
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay }}
-      whileHover={{ y: -12, scale: 1.03 }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{ duration: 0.4, delay, ease: 'easeOut' }}
+      whileHover={{ y: -8 }}
       onClick={handleClick}
       className="group relative bg-gradient-to-br from-white via-white to-gray-50/50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900/50 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 dark:border-gray-700 hover:border-primary/30 dark:hover:border-primary/50 overflow-hidden cursor-pointer"
+      style={{ transform: 'translateZ(0)' }}
     >
       {/* Animated background gradient on hover */}
       <motion.div
@@ -77,7 +78,8 @@ const FeatureCard = ({ icon, title, description, delay = 0, featureId = '' }) =>
       />
     </motion.div>
   );
-};
+});
 
-// Memoize to avoid unnecessary re-renders when props are unchanged
-export default React.memo(FeatureCard);
+FeatureCard.displayName = 'FeatureCard';
+
+export default FeatureCard;

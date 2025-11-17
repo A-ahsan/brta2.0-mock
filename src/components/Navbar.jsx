@@ -32,7 +32,9 @@ const Navbar = () => {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
       className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-sm"
+      style={{ transform: 'translateZ(0)' }}
     >
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">

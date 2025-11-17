@@ -84,14 +84,15 @@ const AdminPanel = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Animated background elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ willChange: 'transform' }}>
         <motion.div
           animate={{ 
-            rotate: [0, 360],
-            scale: [1, 1.1, 1]
+            x: [0, 50, 0],
+            y: [0, -100, 0]
           }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear", repeatType: "loop" }}
           className="absolute top-20 right-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl"
+          style={{ transform: 'translateZ(0)' }}
         />
       </div>
 
