@@ -16,12 +16,14 @@ import {
   Phone,
   MapPin,
   X,
-  CheckCircle
+  CheckCircle,
+  Calculator
 } from 'phosphor-react';
 import { useLanguage, useDownload } from '../contexts/AppContext';
 import { translations } from '../utils/translations';
 import NewApplicationModal from '../components/NewApplicationModal';
 import ThemeLanguageToggler from '../components/ThemeLanguageToggler';
+import EmbeddedCalculator from '../components/EmbeddedCalculator';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
@@ -492,6 +494,7 @@ const UserDashboard = () => {
   const menuItems = [
     { id: 'license', icon: <IdentificationCard size={24} weight="duotone" />, label: t.licenseApplication },
     { id: 'vehicle', icon: <Car size={24} weight="duotone" />, label: t.vehicleRegistration },
+    { id: 'calculator', icon: <Calculator size={24} weight="duotone" />, label: t.costCalculator },
     { id: 'payments', icon: <CreditCard size={24} weight="duotone" />, label: t.myPayments },
     { id: 'booking', icon: <CalendarCheck size={24} weight="duotone" />, label: t.testBooking },
     { id: 'profile', icon: <User size={24} weight="duotone" />, label: t.profile },
@@ -1168,6 +1171,17 @@ const UserDashboard = () => {
                 </motion.div>
               )}
             </AnimatePresence>
+          </div>
+        );
+
+      case 'calculator':
+        return (
+          <div>
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-3">
+              <Calculator size={32} weight="duotone" className="text-primary" />
+              {t.costCalculator}
+            </h2>
+            <EmbeddedCalculator />
           </div>
         );
 

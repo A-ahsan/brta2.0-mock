@@ -58,6 +58,12 @@ const Navbar = () => {
           {/* Navigation Links */}
           <div className="hidden md:flex items-center gap-8">
             <Link
+              to="/fee-calculator"
+              className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-green-400 transition-colors font-medium"
+            >
+              {language === 'en' ? 'Fee Calculator' : 'ফি ক্যালকুলেটর'}
+            </Link>
+            <Link
               to="/dashboard"
               className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-green-400 transition-colors font-medium"
             >
