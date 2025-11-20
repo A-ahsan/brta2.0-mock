@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import {
   IdentificationCard,
-  Fingerprint,
+  FaceMask,
   CalendarCheck,
   CreditCard,
   Calculator,
@@ -106,7 +106,7 @@ const Homepage = () => {
     },
     {
       id: 'face_verification',
-      icon: <Fingerprint size={32} weight="duotone" />,
+      icon: <FaceMask size={32} weight="duotone" />,
       title: t.faceVerification,
       description: t.faceVerificationDesc,
     },

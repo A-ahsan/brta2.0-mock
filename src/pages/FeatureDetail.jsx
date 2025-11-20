@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   IdentificationCard,
-  Fingerprint,
+  FaceMask,
   CalendarCheck,
   CreditCard,
   Calculator,
@@ -22,7 +22,7 @@ const getIcon = (type) => {
   const iconProps = { size: 64, weight: "duotone" };
   switch(type) {
     case 'driving_license': return <IdentificationCard {...iconProps} />;
-    case 'face_verification': return <Fingerprint {...iconProps} />;
+    case 'face_verification': return <FaceMask {...iconProps} />;
     case 'slot_booking': return <CalendarCheck {...iconProps} />;
     case 'payment_system': return <CreditCard {...iconProps} />;
     case 'cost_calculator': return <Calculator {...iconProps} />;
@@ -121,11 +121,424 @@ const FeatureDetail = () => {
       </motion.button>
 
       <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+        {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Main gradient orb with morphing effect */}
           <motion.div
-            animate={{ x: [0, 100, 0], y: [0, -100, 0] }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute top-20 right-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl"
+            animate={{ 
+              x: [0, 100, 0], 
+              y: [0, -100, 0],
+              scale: [1, 1.2, 1],
+              borderRadius: ["50%", "40%", "50%"]
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-primary/10 via-green-500/10 to-primary/5 blur-3xl"
+          />
+          
+          {/* Geometric shapes background */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            className="absolute top-[15%] left-[5%] w-32 h-32 border-2 border-primary/10"
+            style={{ clipPath: "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)" }}
+          />
+          <motion.div
+            animate={{ rotate: -360, scale: [1, 1.1, 1] }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            className="absolute bottom-[20%] right-[8%] w-24 h-24 border-2 border-green-600/10 rounded-xl"
+          />
+          
+          {/* Floating Icons - Feature Specific */}
+          {normalizedId === 'driving_license' && (
+            <>
+              {/* Primary icon with glow effect */}
+              <motion.div
+                animate={{ 
+                  y: [0, -30, 0], 
+                  rotate: [0, 5, 0],
+                  filter: ["drop-shadow(0 0 8px rgba(0,106,78,0.3))", "drop-shadow(0 0 20px rgba(0,106,78,0.5))", "drop-shadow(0 0 8px rgba(0,106,78,0.3))"]
+                }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-40 left-[10%] opacity-20"
+              >
+                <IdentificationCard size={80} weight="duotone" className="text-primary" />
+              </motion.div>
+              {/* Shield with pulse */}
+              <motion.div
+                animate={{ 
+                  y: [0, 25, 0], 
+                  rotate: [0, -5, 0],
+                  scale: [1, 1.08, 1]
+                }}
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className="absolute top-[60%] right-[15%] opacity-15"
+              >
+                <div className="relative">
+                  <Shield size={100} weight="duotone" className="text-green-600" />
+                  <motion.div
+                    animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                    className="absolute inset-0 bg-green-600/20 rounded-full blur-xl"
+                  />
+                </div>
+              </motion.div>
+              {/* Checkmark with trail */}
+              <motion.div
+                animate={{ 
+                  y: [0, -20, 0], 
+                  x: [0, 10, 0],
+                  opacity: [0.1, 0.15, 0.1]
+                }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                className="absolute bottom-40 left-[20%]"
+              >
+                <CheckCircle size={70} weight="duotone" className="text-primary" />
+              </motion.div>
+              {/* Floating particles */}
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  animate={{ 
+                    y: [0, -100, 0],
+                    opacity: [0, 0.6, 0]
+                  }}
+                  transition={{ 
+                    duration: 4 + i, 
+                    repeat: Infinity, 
+                    ease: "easeInOut",
+                    delay: i * 0.8
+                  }}
+                  className="absolute w-1 h-1 bg-primary/40 rounded-full"
+                  style={{
+                    left: `${15 + i * 15}%`,
+                    bottom: `${20 + i * 5}%`
+                  }}
+                />
+              ))}
+            </>
+          )}
+          
+          {normalizedId === 'face_verification' && (
+            <>
+              {/* Scanning face icon with scan lines */}
+              <motion.div
+                animate={{ 
+                  y: [0, -35, 0], 
+                  scale: [1, 1.1, 1] 
+                }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-32 left-[12%] opacity-20 relative"
+              >
+                <FaceMask size={90} weight="duotone" className="text-primary" />
+                <motion.div
+                  animate={{ y: [0, 90, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                  className="absolute top-0 left-0 w-full h-0.5 bg-primary/40"
+                />
+              </motion.div>
+              {/* Pulsing shield */}
+              <motion.div
+                animate={{ 
+                  y: [0, 30, 0], 
+                  rotate: [0, 10, 0],
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+                className="absolute top-[55%] right-[10%] opacity-15"
+              >
+                <Shield size={110} weight="duotone" className="text-green-600" />
+                <motion.div
+                  animate={{ scale: [1, 2, 1], opacity: [0.3, 0, 0.3] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="absolute inset-0 border-2 border-green-600/30 rounded-full"
+                />
+              </motion.div>
+              {/* Orbiting checkmarks */}
+              <motion.div
+                className="absolute bottom-32 right-[25%]"
+                style={{ width: 100, height: 100 }}
+              >
+                {[0, 120, 240].map((angle, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear", delay: i * 0.3 }}
+                    className="absolute top-1/2 left-1/2"
+                    style={{ transformOrigin: "0 0" }}
+                  >
+                    <div style={{ transform: `rotate(${angle}deg) translateX(50px)` }}>
+                      <CheckCircle size={20} weight="fill" className="text-primary opacity-30" />
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </>
+          )}
+          
+          {normalizedId === 'slot_booking' && (
+            <>
+              {/* Calendar with page flip effect */}
+              <motion.div
+                animate={{ 
+                  y: [0, -30, 0], 
+                  rotateY: [0, 180, 360]
+                }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-36 right-[8%] opacity-20"
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <CalendarCheck size={85} weight="duotone" className="text-primary" />
+              </motion.div>
+              {/* Animated clock/time indicators */}
+              <motion.div className="absolute top-[58%] left-[12%] opacity-15">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                >
+                  <CheckCircle size={95} weight="duotone" className="text-green-600" />
+                </motion.div>
+                {[...Array(12)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute top-1/2 left-1/2 w-1 h-3 bg-green-600/30"
+                    style={{
+                      transform: `rotate(${i * 30}deg) translateY(-40px)`,
+                      transformOrigin: "0 40px"
+                    }}
+                    animate={{ opacity: [0.3, 0.8, 0.3] }}
+                    transition={{ duration: 1, repeat: Infinity, delay: i * 0.1 }}
+                  />
+                ))}
+              </motion.div>
+              {/* Bouncing calendar icons */}
+              <motion.div
+                animate={{ 
+                  y: [0, -22, 0], 
+                  rotate: [0, 6, 0],
+                  scale: [1, 1.05, 1]
+                }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                className="absolute bottom-36 right-[22%] opacity-12"
+              >
+                <CalendarCheck size={70} weight="duotone" className="text-primary" />
+              </motion.div>
+            </>
+          )}
+          
+          {normalizedId === 'payment_system' && (
+            <>
+              {/* Credit card with swipe effect */}
+              <motion.div
+                animate={{ 
+                  y: [0, -32, 0], 
+                  rotateZ: [0, 12, 0],
+                  x: [0, 20, 0]
+                }}
+                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-44 left-[15%] opacity-20"
+              >
+                <CreditCard size={88} weight="duotone" className="text-primary" />
+                <motion.div
+                  animate={{ scaleX: [0, 1, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute top-1/2 left-0 h-1 w-full bg-gradient-to-r from-transparent via-primary/40 to-transparent"
+                />
+              </motion.div>
+              {/* Shield with lock icon */}
+              <motion.div
+                animate={{ 
+                  y: [0, 26, 0], 
+                  scale: [1, 1.05, 1] 
+                }}
+                transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
+                className="absolute top-[62%] right-[18%] opacity-15"
+              >
+                <Shield size={105} weight="duotone" className="text-green-600" />
+                <motion.div
+                  animate={{ scale: [0.8, 1.2, 0.8], opacity: [1, 0, 1] }}
+                  transition={{ duration: 2.5, repeat: Infinity }}
+                  className="absolute inset-0 rounded-full border-2 border-green-600/40"
+                />
+              </motion.div>
+              {/* Currency symbols floating */}
+              {['৳', '$', '€'].map((symbol, i) => (
+                <motion.div
+                  key={i}
+                  animate={{ 
+                    y: [0, -60, 0],
+                    opacity: [0.15, 0.3, 0.15],
+                    rotate: [0, 360, 0]
+                  }}
+                  transition={{ duration: 6 + i, repeat: Infinity, ease: "easeInOut", delay: i * 1.5 }}
+                  className="absolute text-4xl font-bold text-primary opacity-10"
+                  style={{
+                    left: `${20 + i * 25}%`,
+                    bottom: `${30 + i * 10}%`
+                  }}
+                >
+                  {symbol}
+                </motion.div>
+              ))}
+              <motion.div
+                animate={{ 
+                  y: [0, -28, 0], 
+                  x: [0, 8, 0] 
+                }}
+                transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+                className="absolute bottom-28 left-[18%] opacity-12"
+              >
+                <CheckCircle size={72} weight="duotone" className="text-primary" />
+              </motion.div>
+            </>
+          )}
+          
+          {normalizedId === 'cost_calculator' && (
+            <>
+              {/* Calculator with number animation */}
+              <motion.div
+                animate={{ 
+                  y: [0, -28, 0], 
+                  x: [0, -10, 0] 
+                }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-38 right-[12%] opacity-20 relative"
+              >
+                <Calculator size={82} weight="duotone" className="text-primary" />
+                {[1, 2, 3].map((num, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{ 
+                      y: [0, -20, -40],
+                      opacity: [1, 0.5, 0]
+                    }}
+                    transition={{ 
+                      duration: 2, 
+                      repeat: Infinity, 
+                      delay: i * 0.6,
+                      ease: "easeOut"
+                    }}
+                    className="absolute top-0 left-1/2 text-primary font-bold text-sm"
+                  >
+                    {num}
+                  </motion.div>
+                ))}
+              </motion.div>
+              {/* Graph bars animation */}
+              <motion.div className="absolute top-[56%] left-[10%] opacity-15 flex gap-2 items-end h-24">
+                {[60, 80, 50, 95, 70].map((height, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{ scaleY: [0.6, 1, 0.6] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+                    className="w-3 bg-green-600 rounded-t"
+                    style={{ height: `${height}%` }}
+                  />
+                ))}
+              </motion.div>
+              {/* Percentage signs */}
+              <motion.div
+                animate={{ 
+                  y: [0, -24, 0], 
+                  rotate: [0, 360, 720],
+                  scale: [1, 1.2, 1]
+                }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+                className="absolute bottom-40 right-[20%] opacity-12 text-3xl font-bold text-primary"
+              >
+                %
+              </motion.div>
+            </>
+          )}
+          
+          {normalizedId === 'chatbot' && (
+            <>
+              {/* Robot with antenna pulse */}
+              <motion.div
+                animate={{ 
+                  y: [0, -35, 0], 
+                  scale: [1, 1.08, 1] 
+                }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-42 left-[14%] opacity-20 relative"
+              >
+                <Robot size={92} weight="duotone" className="text-primary" />
+                <motion.div
+                  animate={{ 
+                    scaleY: [1, 1.3, 1],
+                    opacity: [0.5, 1, 0.5]
+                  }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  className="absolute -top-4 left-1/2 -translate-x-1/2 w-0.5 h-4 bg-primary"
+                />
+                <motion.div
+                  animate={{ scale: [1, 1.5, 1], opacity: [1, 0, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  className="absolute -top-4 left-1/2 -translate-x-1/2 w-2 h-2 bg-primary rounded-full"
+                />
+              </motion.div>
+              {/* Chat bubbles */}
+              {[0, 1, 2].map((i) => (
+                <motion.div
+                  key={i}
+                  animate={{ 
+                    y: [0, -40, -80],
+                    x: [0, (i - 1) * 15, (i - 1) * 30],
+                    opacity: [0, 1, 0],
+                    scale: [0.5, 1, 0.8]
+                  }}
+                  transition={{ 
+                    duration: 3, 
+                    repeat: Infinity, 
+                    delay: i * 0.8,
+                    ease: "easeOut"
+                  }}
+                  className="absolute top-[60%] right-[14%] w-8 h-8 bg-green-600/20 rounded-lg"
+                  style={{ borderRadius: "50% 50% 50% 0" }}
+                />
+              ))}
+              {/* Network nodes */}
+              <motion.div className="absolute bottom-34 left-[22%] w-32 h-32">
+                {[...Array(4)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.6, 0.3] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
+                    className="absolute w-3 h-3 bg-primary/40 rounded-full"
+                    style={{
+                      top: `${Math.sin(i * Math.PI / 2) * 50 + 50}%`,
+                      left: `${Math.cos(i * Math.PI / 2) * 50 + 50}%`
+                    }}
+                  />
+                ))}
+              </motion.div>
+            </>
+          )}
+          
+          {/* Decorative Elements - All Features - More Creative */}
+          <motion.div
+            animate={{ 
+              rotate: 360,
+              scale: [1, 1.2, 1]
+            }}
+            transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+            className="absolute bottom-20 left-[5%] w-4 h-4 border-2 border-primary/30 rounded-full"
+          />
+          <motion.div
+            animate={{ rotate: -360 }}
+            transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+            className="absolute top-[70%] right-[8%]"
+          >
+            <div className="w-6 h-6 border-2 border-green-600/25" style={{ clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)" }} />
+          </motion.div>
+          <motion.div
+            animate={{ 
+              scale: [1, 1.5, 1], 
+              opacity: [0.3, 0.6, 0.3],
+              rotate: [0, 180, 360]
+            }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[45%] left-[8%] w-2 h-2 bg-primary/40"
+            style={{ clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)" }}
           />
         </div>
 
@@ -167,8 +580,15 @@ const FeatureDetail = () => {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-white dark:bg-gray-800/50">
-        <div className="max-w-5xl mx-auto">
+      <section className="py-20 px-4 bg-white dark:bg-gray-800/50 relative overflow-hidden">
+        {/* Subtle Background Animation */}
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.05, 0.1, 0.05] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none"
+        />
+        
+        <div className="max-w-5xl mx-auto relative z-10">
           <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-4xl font-extrabold mb-12 text-center text-gray-800 dark:text-white">
             {language === 'en' ? 'Key Features' : 'মূল বৈশিষ্ট্য'}
           </motion.h2>
@@ -180,9 +600,15 @@ const FeatureDetail = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 + index * 0.1 }}
-                className="flex items-start gap-4 p-6 bg-gradient-to-r from-primary/10 to-green-600/10 rounded-xl border border-primary/20 hover:border-primary/50 transition-all"
+                whileHover={{ scale: 1.02, y: -4 }}
+                className="flex items-start gap-4 p-6 bg-gradient-to-r from-primary/10 to-green-600/10 rounded-xl border border-primary/20 hover:border-primary/50 transition-all hover:shadow-lg"
               >
-                <CheckCircle size={28} className="text-primary flex-shrink-0 mt-1" weight="fill" />
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }}
+                >
+                  <CheckCircle size={28} className="text-primary flex-shrink-0 mt-1" weight="fill" />
+                </motion.div>
                 <p className="text-gray-700 dark:text-gray-300 text-lg font-medium">{item}</p>
               </motion.div>
             ))}
@@ -190,16 +616,43 @@ const FeatureDetail = () => {
         </div>
       </section>
 
-      <section className="py-20 px-4">
-        <div className="max-w-5xl mx-auto">
+      <section className="py-20 px-4 relative overflow-hidden">
+        {/* Animated Background Particles */}
+        <motion.div
+          animate={{ y: [0, -20, 0], x: [0, 15, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-10 right-[10%] w-20 h-20 bg-green-500/10 rounded-full blur-xl pointer-events-none"
+        />
+        <motion.div
+          animate={{ y: [0, 25, 0], x: [0, -20, 0] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute bottom-10 left-[8%] w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none"
+        />
+        
+        <div className="max-w-5xl mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="bg-gradient-to-r from-primary via-green-600 to-primary rounded-3xl p-12 text-white shadow-2xl"
+            whileHover={{ scale: 1.02 }}
+            className="bg-gradient-to-r from-primary via-green-600 to-primary rounded-3xl p-12 text-white shadow-2xl relative overflow-hidden"
           >
-            <div className="flex items-start gap-6">
-              <Shield size={48} weight="duotone" className="flex-shrink-0" />
+            {/* Floating shield icon in background */}
+            <motion.div
+              animate={{ rotate: [0, 5, -5, 0], y: [0, -10, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-4 right-8 opacity-10"
+            >
+              <Shield size={120} weight="duotone" />
+            </motion.div>
+            
+            <div className="flex items-start gap-6 relative z-10">
+              <motion.div
+                animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Shield size={48} weight="duotone" className="flex-shrink-0" />
+              </motion.div>
               <div>
                 <h3 className="text-3xl font-bold mb-4">
                   {language === 'en' ? 'Why Choose This Feature?' : 'এই বৈশিষ্ট্য কেন বেছে নিন?'}
@@ -211,8 +664,25 @@ const FeatureDetail = () => {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-white dark:bg-gray-800/50">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="py-20 px-4 bg-white dark:bg-gray-800/50 relative overflow-hidden">
+        {/* Floating decorative elements */}
+        <motion.div
+          animate={{ y: [0, -30, 0], rotate: 360 }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute top-20 left-[5%] w-16 h-16 border-4 border-primary/20 rounded-full pointer-events-none"
+        />
+        <motion.div
+          animate={{ y: [0, 25, 0], rotate: -360 }}
+          transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+          className="absolute bottom-20 right-[8%] w-20 h-20 border-4 border-green-600/20 rounded-full pointer-events-none"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none"
+        />
+        
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           <motion.h2
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -235,7 +705,7 @@ const FeatureDetail = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.9 }}
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(0, 106, 78, 0.3)" }}
             whileTap={{ scale: 0.95 }}
             className="px-10 py-4 bg-gradient-to-r from-primary to-green-600 text-white rounded-lg font-bold text-lg hover:shadow-xl transition-all"
           >
