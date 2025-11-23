@@ -18,6 +18,7 @@ import {
   Bicycle,
 } from 'phosphor-react';
 import Navbar from '../components/Navbar';
+import NoticesTicker from '../components/NoticesTicker';
 import FeatureCard from '../components/FeatureCard';
 import { useLanguage } from '../contexts/AppContext';
 import { translations } from '../utils/translations';
@@ -145,6 +146,7 @@ const Homepage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-light via-white to-muted dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-x-hidden">
       <Navbar />
+      <NoticesTicker />
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-4 overflow-hidden">
@@ -182,7 +184,7 @@ const Homepage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="inline-block mb-6"
+                className="inline-block mb-6 mt-8"
               >
                 <div
                   className="bg-gradient-to-r from-red-50 to-red-100 dark:from-red-900/30 dark:to-red-800/30 text-danger dark:text-red-400 px-6 py-2 rounded-full font-bold text-sm border-2 border-danger/30 backdrop-blur-sm shadow-lg"

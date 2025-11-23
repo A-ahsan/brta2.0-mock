@@ -1,9 +1,10 @@
 export const translations = {
   en: {
     // Navbar
-    dashboard: 'Dashboard',
-    reminders: 'Reminders',
-    appointments: 'Appointments',
+    notices: 'Notices',
+    more: 'More',
+    aboutUs: 'About Us',
+    feeCalculator: 'Fee Calculator',
     login: 'Login',
     signup: 'Sign Up',
     logout: 'Logout',
@@ -112,12 +113,65 @@ export const translations = {
       disclaimer: 'Fees are approximate and may vary. Please verify with BRTA for exact amounts.',
       backButton: 'Back to Dashboard',
     },
+    
+    // Notices
+    noticesPage: {
+      title: 'Official Notices',
+      subtitle: 'Stay updated with the latest announcements and circulars from BRTA',
+      latestNotices: 'Latest Notices',
+      viewDetails: 'View Details',
+      publishedOn: 'Published on',
+      category: 'Category',
+      categories: {
+        general: 'General',
+        license: 'License',
+        vehicle: 'Vehicle Registration',
+        tax: 'Tax & Fees',
+        exam: 'Exam Schedule',
+        maintenance: 'System Maintenance'
+      }
+    },
+    
+    // About Us
+    aboutPage: {
+      title: 'About BRTA 2.0',
+      subtitle: 'Transforming Bangladesh\'s Transport Management System',
+      mission: 'Our Mission',
+      missionText: 'To provide efficient, transparent, and accessible transport services to all citizens of Bangladesh through digital innovation and modern technology.',
+      vision: 'Our Vision',
+      visionText: 'To become the leading smart transport authority in South Asia, setting standards for digital governance and citizen services.',
+      values: 'Our Values',
+      transparency: 'Transparency',
+      transparencyText: 'Clear and open processes with no hidden costs or intermediaries',
+      efficiency: 'Efficiency',
+      efficiencyText: 'Fast and streamlined services saving time for every citizen',
+      innovation: 'Innovation',
+      innovationText: 'Leveraging cutting-edge technology for better service delivery',
+      accessibility: 'Accessibility',
+      accessibilityText: '24/7 online services accessible from anywhere in Bangladesh',
+      features: 'Key Features',
+      feature1: 'Online License Application & Tracking',
+      feature2: 'Vehicle Registration & Tax Payment',
+      feature3: 'AI-Powered Chatbot Support',
+      feature4: 'Secure Biometric Verification',
+      feature5: 'Digital Payment Integration',
+      feature6: 'Slot Booking System',
+      contact: 'Contact Information',
+      headquarters: 'BRTA Headquarters',
+      address: 'Mirpur, Dhaka-1216, Bangladesh',
+      phone: 'Phone',
+      email: 'Email',
+      helpline: 'Helpline',
+      hours: 'Working Hours',
+      workingHours: 'Saturday - Thursday: 9:00 AM - 5:00 PM'
+    }
   },
   bn: {
     // Navbar
-    dashboard: 'ড্যাশবোর্ড',
-    reminders: 'রিমাইন্ডার',
-    appointments: 'অ্যাপয়েন্টমেন্ট',
+    notices: 'নোটিশ',
+    more: 'আরও',
+    aboutUs: 'আমাদের সম্পর্কে',
+    feeCalculator: 'ফি ক্যালকুলেটর',
     login: 'লগইন',
     signup: 'সাইন আপ',
     logout: 'লগআউট',
@@ -226,5 +280,57 @@ export const translations = {
       disclaimer: 'ফি আনুমানিক এবং পরিবর্তিত হতে পারে। সঠিক পরিমাণের জন্য অনুগ্রহ করে BRTA এর সাথে যাচাই করুন।',
       backButton: 'ড্যাশবোর্ডে ফিরে যান',
     },
+    
+    // Notices
+    noticesPage: {
+      title: 'সরকারি নোটিশ',
+      subtitle: 'BRTA থেকে সর্বশেষ ঘোষণা এবং সার্কুলার সম্পর্কে আপডেট থাকুন',
+      latestNotices: 'সর্বশেষ নোটিশ',
+      viewDetails: 'বিস্তারিত দেখুন',
+      publishedOn: 'প্রকাশের তারিখ',
+      category: 'ক্যাটাগরি',
+      categories: {
+        general: 'সাধারণ',
+        license: 'লাইসেন্স',
+        vehicle: 'যানবাহন নিবন্ধন',
+        tax: 'ট্যাক্স ও ফি',
+        exam: 'পরীক্ষার সময়সূচী',
+        maintenance: 'সিস্টেম রক্ষণাবেক্ষণ'
+      }
+    },
+    
+    // About Us
+    aboutPage: {
+      title: 'BRTA 2.0 সম্পর্কে',
+      subtitle: 'বাংলাদেশের পরিবহন ব্যবস্থাপনা সিস্টেম রূপান্তর',
+      mission: 'আমাদের লক্ষ্য',
+      missionText: 'ডিজিটাল উদ্ভাবন এবং আধুনিক প্রযুক্তির মাধ্যমে বাংলাদেশের সকল নাগরিকদের জন্য দক্ষ, স্বচ্ছ এবং সহজলভ্য পরিবহন সেবা প্রদান করা।',
+      vision: 'আমাদের দৃষ্টিভঙ্গি',
+      visionText: 'ডিজিটাল শাসন এবং নাগরিক সেবার মান নির্ধারণ করে দক্ষিণ এশিয়ার নেতৃস্থানীয় স্মার্ট পরিবহন কর্তৃপক্ষ হওয়া।',
+      values: 'আমাদের মূল্যবোধ',
+      transparency: 'স্বচ্ছতা',
+      transparencyText: 'কোন লুকানো খরচ বা মধ্যস্থতাকারী ছাড়াই পরিষ্কার এবং উন্মুক্ত প্রক্রিয়া',
+      efficiency: 'দক্ষতা',
+      efficiencyText: 'প্রতিটি নাগরিকের সময় বাঁচিয়ে দ্রুত এবং সুশৃঙ্খল সেবা',
+      innovation: 'উদ্ভাবন',
+      innovationText: 'উন্নত সেবা প্রদানের জন্য অত্যাধুনিক প্রযুক্তির ব্যবহার',
+      accessibility: 'সহজলভ্যতা',
+      accessibilityText: 'বাংলাদেশের যে কোন স্থান থেকে ২৪/৭ অনলাইন সেবা',
+      features: 'মূল বৈশিষ্ট্য',
+      feature1: 'অনলাইন লাইসেন্স আবেদন এবং ট্র্যাকিং',
+      feature2: 'যানবাহন নিবন্ধন এবং ট্যাক্স পেমেন্ট',
+      feature3: 'AI-চালিত চ্যাটবট সহায়তা',
+      feature4: 'নিরাপদ বায়োমেট্রিক যাচাইকরণ',
+      feature5: 'ডিজিটাল পেমেন্ট ইন্টিগ্রেশন',
+      feature6: 'স্লট বুকিং সিস্টেম',
+      contact: 'যোগাযোগের তথ্য',
+      headquarters: 'BRTA সদর দপ্তর',
+      address: 'মিরপুর, ঢাকা-১২১৬, বাংলাদেশ',
+      phone: 'ফোন',
+      email: 'ইমেইল',
+      helpline: 'হেল্পলাইন',
+      hours: 'কর্মঘণ্টা',
+      workingHours: 'শনিবার - বৃহস্পতিবার: সকাল ৯:০০ - বিকাল ৫:০০'
+    }
   }
 };

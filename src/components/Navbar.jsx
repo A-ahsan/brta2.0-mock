@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Moon, Sun, Globe } from 'phosphor-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Moon, Sun, Globe, CaretDown } from 'phosphor-react';
 import { Bell } from 'phosphor-react';
 import { useLocation } from 'react-router-dom';
 import React, { useState } from 'react';
@@ -15,6 +15,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const t = translations[language];
   const [showPanel, setShowPanel] = useState(false);
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
 
   // Determine role based on route
   let role = null;
@@ -58,29 +59,48 @@ const Navbar = () => {
           {/* Navigation Links */}
           <div className="hidden md:flex items-center gap-8">
             <Link
-              to="/fee-calculator"
+              to="/notices"
               className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-green-400 transition-colors font-medium"
             >
-              {language === 'en' ? 'Fee Calculator' : 'ফি ক্যালকুলেটর'}
+              {t.notices}
             </Link>
-            <Link
-              to="/dashboard"
-              className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-green-400 transition-colors font-medium"
-            >
-              {t.dashboard}
-            </Link>
-            <Link
-              to="/dashboard"
-              className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-green-400 transition-colors font-medium"
-            >
-              {t.reminders}
-            </Link>
-            <Link
-              to="/dashboard"
-              className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-green-400 transition-colors font-medium"
-            >
-              {t.appointments}
-            </Link>
+            
+            {/* More Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setShowMoreMenu(!showMoreMenu)}
+                onBlur={() => setTimeout(() => setShowMoreMenu(false), 200)}
+                className="flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-green-400 transition-colors font-medium"
+              >
+                {t.more}
+                <CaretDown size={16} className={`transition-transform ${showMoreMenu ? 'rotate-180' : ''}`} />
+              </button>
+              
+              <AnimatePresence>
+                {showMoreMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full mt-2 right-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 min-w-[200px] z-50"
+                  >
+                    <Link
+                      to="/fee-calculator"
+                      className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-primary/10 hover:text-primary dark:hover:text-green-400 transition-colors"
+                    >
+                      {t.feeCalculator}
+                    </Link>
+                    <Link
+                      to="/about"
+                      className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-primary/10 hover:text-primary dark:hover:text-green-400 transition-colors"
+                    >
+                      {t.aboutUs}
+                    </Link>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
           {/* Right Side Actions */}

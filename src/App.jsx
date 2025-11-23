@@ -12,6 +12,8 @@ const Login = lazy(() => import('./pages/Login'));
 const Signup = lazy(() => import('./pages/Signup'));
 const FeatureDetail = lazy(() => import('./pages/FeatureDetail'));
 const FeeCalculator = lazy(() => import('./pages/FeeCalculator'));
+const Notices = lazy(() => import('./pages/Notices'));
+const AboutUs = lazy(() => import('./pages/AboutUs'));
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
                   <Route path="/" element={<Homepage />} />
                   <Route path="/feature/:featureId" element={<FeatureDetail />} />
                   <Route path="/fee-calculator" element={<FeeCalculator />} />
+                  <Route path="/notices" element={<Notices />} />
+                  <Route path="/about" element={<AboutUs />} />
                   <Route path="/dashboard" element={<UserDashboard />} />
                   <Route path="/admin/*" element={<AdminPanel />} />
                   <Route path="/police/*" element={<PoliceDashboard />} />
