@@ -126,45 +126,33 @@ const Notices = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-light via-white to-muted dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ willChange: 'transform' }}>
+      {/* Animated Background Elements - Optimized */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
           animate={{ 
             x: [0, 150, 0],
-            y: [0, -80, 0],
-            scale: [1, 1.1, 1]
+            y: [0, -80, 0]
           }}
-          transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
-          className="absolute top-10 right-20 w-[500px] h-[500px] bg-gradient-to-br from-primary/15 to-green-600/15 rounded-full blur-3xl"
-          style={{ transform: 'translateZ(0)' }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear", repeatType: "reverse" }}
+          className="absolute top-10 right-20 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-green-600/20 rounded-full blur-3xl"
+          style={{ transform: 'translate3d(0, 0, 0)', willChange: 'transform' }}
         />
         <motion.div
           animate={{ 
             x: [0, -120, 0],
-            y: [0, 120, 0],
-            scale: [1, 1.15, 1]
+            y: [0, 120, 0]
           }}
-          transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-10 left-20 w-[450px] h-[450px] bg-gradient-to-br from-blue-500/15 to-cyan-500/15 rounded-full blur-3xl"
-          style={{ transform: 'translateZ(0)' }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear", repeatType: "reverse" }}
+          className="absolute bottom-10 left-20 w-[450px] h-[450px] bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl"
+          style={{ transform: 'translate3d(0, 0, 0)', willChange: 'transform' }}
         />
         <motion.div
           animate={{ 
-            rotate: [0, 360],
-            scale: [1, 1.2, 1]
+            rotate: [0, 360]
           }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          className="absolute top-1/3 left-1/3 w-[350px] h-[350px] bg-gradient-to-br from-yellow-400/10 to-orange-500/10 rounded-full blur-3xl"
-          style={{ transform: 'translateZ(0)' }}
-        />
-        <motion.div
-          animate={{ 
-            y: [0, -100, 0],
-            opacity: [0.2, 0.4, 0.2]
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-2/3 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-full blur-3xl"
-          style={{ transform: 'translateZ(0)' }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+          className="absolute top-1/3 left-1/3 w-[350px] h-[350px] bg-gradient-to-br from-yellow-400/15 to-orange-500/15 rounded-full blur-3xl"
+          style={{ transform: 'translate3d(0, 0, 0)', willChange: 'transform' }}
         />
       </div>
       
@@ -230,25 +218,22 @@ const Notices = () => {
 
           {/* Notices Grid */}
           <motion.div
-            layout
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            <AnimatePresence mode="popLayout">
+            <AnimatePresence mode="wait">
               {filteredNotices.map((notice, index) => (
                 <motion.div
                   key={notice.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.8, y: 50 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.8, y: -50 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
                   transition={{ 
-                    duration: 0.4, 
-                    delay: index * 0.05,
-                    type: "spring",
-                    stiffness: 100
+                    duration: 0.3, 
+                    delay: index * 0.03
                   }}
-                  whileHover={{ y: -8, scale: 1.02 }}
+                  whileHover={{ y: -5 }}
                   className="relative bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 cursor-pointer group"
+                  style={{ transform: 'translate3d(0, 0, 0)', willChange: 'transform' }}
                   onClick={() => setSelectedNotice(notice)}
                 >
                   {/* Trending Badge */}
@@ -337,14 +322,15 @@ const Notices = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedNotice(null)}
           >
             <motion.div
-              initial={{ scale: 0.8, y: 50 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.8, y: 50 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.2 }}
               className="bg-white dark:bg-gray-800 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >

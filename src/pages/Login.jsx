@@ -3,22 +3,42 @@ import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import { EnvelopeSimple, LockKey, Eye, EyeSlash, SignIn } from 'phosphor-react';
 import { useLanguage } from '../contexts/AppContext';
+import { useAuth } from '../contexts/AuthContext';
 import { translations } from '../utils/translations';
 
 const Login = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { signIn } = useAuth();
   const t = translations[language];
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     remember: false,
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/dashboard');
+    setIsLoading(true);
+
+    const result = await signIn(formData.email, formData.password);
+
+    if (result.success) {
+      // Check role and redirect accordingly
+      const role = result.profile?.role || 'user';
+      
+      if (role === 'admin') {
+        navigate('/admin');
+      } else if (role === 'police') {
+        navigate('/police-dashboard');
+      } else {
+        navigate('/dashboard');
+      }
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -184,10 +204,20 @@ const Login = () => {
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
               type="submit"
-              className="w-full bg-gradient-to-r from-primary to-green-700 text-white py-3 rounded-xl font-bold text-base shadow-lg hover:shadow-2xl transition-all flex items-center justify-center gap-2"
+              disabled={isLoading}
+              className="w-full bg-gradient-to-r from-primary to-green-700 text-white py-3 rounded-xl font-bold text-base shadow-lg hover:shadow-2xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <SignIn size={22} weight="bold" />
-              {t.login}
+              {isLoading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  {language === 'en' ? 'Signing in...' : 'লগইন হচ্ছে...'}
+                </>
+              ) : (
+                <>
+                  <SignIn size={22} weight="bold" />
+                  {t.login}
+                </>
+              )}
             </motion.button>
           </form>
 

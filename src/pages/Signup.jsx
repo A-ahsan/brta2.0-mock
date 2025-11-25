@@ -3,13 +3,17 @@ import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import { User, EnvelopeSimple, LockKey, Phone, Eye, EyeSlash, UserPlus } from 'phosphor-react';
 import { useLanguage } from '../contexts/AppContext';
+import { useAuth } from '../contexts/AuthContext';
 import { translations } from '../utils/translations';
+import toast from 'react-hot-toast';
 
 const Signup = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { signUp } = useAuth();
   const t = translations[language];
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -19,9 +23,44 @@ const Signup = () => {
     agree: false,
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/dashboard');
+
+    // Validation
+    if (formData.password !== formData.confirmPassword) {
+      toast.error(language === 'en' ? 'Passwords do not match!' : 'পাসওয়ার্ড মিলছে না!');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      toast.error(language === 'en' ? 'Password must be at least 6 characters!' : 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে!');
+      return;
+    }
+
+    if (!formData.agree) {
+      toast.error(language === 'en' ? 'Please agree to terms and conditions' : 'অনুগ্রহ করে শর্তাবলীতে সম্মত হন');
+      return;
+    }
+
+    setIsLoading(true);
+
+    const result = await signUp(formData.email, formData.password, formData.fullName);
+
+    if (result.success) {
+      // Show welcome toast and redirect to dashboard immediately
+      const userName = result.userName || formData.fullName;
+      toast.success(language === 'en' 
+        ? `Welcome to BRTA, ${userName}! 🎉` 
+        : `BRTA তে স্বাগতম, ${userName}! 🎉`
+      );
+      
+      // Auto redirect to dashboard after brief delay
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1500);
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -207,6 +246,30 @@ const Signup = () => {
               </div>
             </motion.div>
 
+            {/* Confirm Password */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.75 }}
+            >
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
+                {language === 'en' ? 'Confirm Password' : 'পাসওয়ার্ড নিশ্চিত করুন'}
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <LockKey size={20} className="text-gray-400" />
+                </div>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={formData.confirmPassword}
+                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  placeholder="••••••••"
+                  className="w-full pl-11 pr-12 py-2.5 bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none focus:bg-white dark:focus:bg-gray-700 dark:text-white placeholder-gray-400 transition-all text-base"
+                  required
+                />
+              </div>
+            </motion.div>
+
             {/* Agree to Terms */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -237,10 +300,20 @@ const Signup = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               type="submit"
-              className="w-full bg-gradient-to-r from-primary to-green-700 text-white py-2.5 rounded-xl font-bold text-base shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+              disabled={isLoading}
+              className="w-full bg-gradient-to-r from-primary to-green-700 text-white py-2.5 rounded-xl font-bold text-base shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <UserPlus size={22} weight="bold" />
-              {t.signup}
+              {isLoading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  {language === 'en' ? 'Creating account...' : 'অ্যাকাউন্ট তৈরি হচ্ছে...'}
+                </>
+              ) : (
+                <>
+                  <UserPlus size={22} weight="bold" />
+                  {t.signup}
+                </>
+              )}
             </motion.button>
           </form>
 

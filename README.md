@@ -125,7 +125,7 @@ npm run preview
 ## 📁 Project Structure
 
 ```
-brta2.0-mock/
+brta_extended/
 ├── public/
 │   ├── brta.png           # BRTA logo
 │   └── prompt.txt         # Project requirements
